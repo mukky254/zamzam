@@ -3,29 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Mashinani - Job Opportunities</title>
+    <title>Kazi Mashinani - Ingia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #1e3a8a;
-            --secondary-color: #3b82f6;
-            --accent-color: #60a5fa;
-            --light-blue: #dbeafe;
-            --text-color: #1f2937;
-            --light-bg: #f0f9ff;
-            --white: #ffffff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -34,63 +14,57 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--text-color);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-        }
-
-        /* Header Styles */
-        header {
-            background: var(--gradient-1);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo i {
-            font-size: 1.8rem;
-        }
-
-        .logo h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gradient-3);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            padding: 20px;
         }
 
-        /* Language Switcher */
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-logo h1 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin: 0;
+        }
+
+        .auth-logo p {
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
         .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -119,224 +93,141 @@
             font-size: 14px;
         }
 
-        /* Navigation */
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 20px;
+        .auth-tabs {
             display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            background: #dbeafe;
+            padding: 4px;
         }
 
-        .nav-item {
-            padding: 0.8rem 1.5rem;
-            background: white;
-            border-radius: 25px;
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
-            border: 2px solid transparent;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* Main Content */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-        }
-
-        .section-header i {
-            font-size: 1.5rem;
-        }
-
-        .section-header h2 {
-            font-size: 1.8rem;
-        }
-
-        /* Job Listings */
-        .job-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .job-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            border-left: 4px solid var(--primary-color);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .job-title {
-            font-size: 1.2rem;
-            color: var(--primary-color);
+            border-radius: 8px;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        .job-category {
-            background: var(--light-blue);
-            color: var(--primary-color);
-            padding: 4px 8px;
-            border-radius: 12px;
+        .auth-tab.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .auth-form {
+            text-align: left;
+        }
+
+        .auth-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .auth-form-group input, .auth-form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-form-group input:focus, .auth-form-group select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .phone-error {
+            color: #dc2626;
             font-size: 0.8rem;
-            font-weight: 600;
+            margin-top: 0.5rem;
+            display: none;
         }
 
-        .job-description {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .job-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .communication {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
             transition: all 0.3s ease;
-            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
-        .btn-call {
-            background: #0078D4;
-            color: white;
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
         }
 
-        .btn-call:hover {
-            background: #0066b8;
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .btn-whatsapp {
-            background: #25D366;
-            color: white;
-        }
-
-        .btn-whatsapp:hover {
-            background: #128C7E;
-        }
-
-        .btn-edit {
-            background: var(--warning);
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #e69500;
-        }
-
-        .btn-delete {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-
-        .btn-logout {
-            background: var(--danger);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .btn-logout:hover {
-            background: #dc2626;
-        }
-
-        /* Welcome Section */
-        .welcome-section {
+        .auth-switch {
             text-align: center;
-            padding: 3rem 2rem;
-            background: var(--gradient-1);
-            color: white;
-            border-radius: 16px;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .auth-switch a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .role-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .welcome-section h1 {
+        .role-option {
+            padding: 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option:hover {
+            border-color: #60a5fa;
+            transform: translateY(-3px);
+        }
+
+        .role-option.active {
+            border-color: #1e3a8a;
+            background: #dbeafe;
+        }
+
+        .role-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-        }
-
-        .welcome-section p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* Loading and Messages */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .message {
@@ -346,377 +237,297 @@
             text-align: center;
         }
 
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
         .success {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
         }
 
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary-color);
-        }
-
-        /* Blog Section */
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .blog-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .blog-title {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .blog-content {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .nav-container {
-                justify-content: center;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            .job-grid, .blog-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome-section h1 {
-                font-size: 2rem;
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-hands-helping"></i>
-                <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div class="language-switcher" onclick="toggleLanguage()">
-                    <div class="language-flag">
-                        <span id="currentFlag">🇰🇪</span>
-                    </div>
-                    <div class="language-name" id="currentLanguage">Kiswahili</div>
-                </div>
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div>
-                        <div id="userName">User</div>
-                        <button class="btn-logout" onclick="logout()">
-                            <i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-sw="Toka">Toka</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div class="language-switcher" onclick="toggleLanguage()">
+        <div class="language-flag">
+            <span id="currentFlag">🇰🇪</span>
         </div>
-    </header>
-
-    <div class="nav-container">
-        <div class="nav-item active" onclick="showSection('home')">
-            <i class="fas fa-home"></i> <span data-en="Home" data-sw="Nyumbani">Nyumbani</span>
-        </div>
-        <div class="nav-item" onclick="showSection('jobs')">
-            <i class="fas fa-briefcase"></i> <span data-en="Available Jobs" data-sw="Kazi Zilizopo">Kazi Zilizopo</span>
-        </div>
-        <div class="nav-item" onclick="showSection('profile')">
-            <i class="fas fa-user"></i> <span data-en="My Profile" data-sw="Wasifu Wangu">Wasifu Wangu</span>
-        </div>
-        <div class="nav-item" id="postJobNav" style="display: none;" onclick="showSection('post')">
-            <i class="fas fa-plus-circle"></i> <span data-en="Post Job" data-sw="Chapisha Kazi">Chapisha Kazi</span>
-        </div>
-        <div class="nav-item" id="myJobsNav" style="display: none;" onclick="showSection('myjobs')">
-            <i class="fas fa-list"></i> <span data-en="My Jobs" data-sw="Kazi Zangu">Kazi Zangu</span>
-        </div>
-        <div class="nav-item" id="employeesNav" style="display: none;" onclick="showSection('employees')">
-            <i class="fas fa-users"></i> <span data-en="Find Workers" data-sw="Tafuta Wafanyikazi">Tafuta Wafanyikazi</span>
-        </div>
+        <div class="language-name" id="currentLanguage">Kiswahili</div>
     </div>
 
-    <div class="main-container">
-        <!-- Home Section -->
-        <section id="homeSection">
-            <div class="welcome-section">
-                <h1 id="welcomeMessage" data-en="Welcome to Kazi Mashinani!" data-sw="Karibu kwenye Kazi Mashinani!">Karibu kwenye Kazi Mashinani!</h1>
+    <div class="auth-container">
+        <div class="auth-logo">
+            <i class="fas fa-hands-helping"></i>
+            <div>
+                <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
                 <p data-en="Connecting Rural Workers with Local Opportunities" data-sw="Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi">Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi</p>
             </div>
+        </div>
 
-            <!-- Blog Section -->
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-newspaper"></i>
-                    <h2 data-en="Latest News & Tips" data-sw="Habari Zaidi na Vidokezo">Habari Zaidi na Vidokezo</h2>
+        <!-- Tabs for Login/Signup -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="showAuthTab('login')">
+                <span data-en="Sign In" data-sw="Ingia">Ingia</span>
+            </button>
+            <button class="auth-tab" onclick="showAuthTab('signup')">
+                <span data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</span>
+            </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
+            <div class="auth-form-group">
+                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
+                <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
+            </div>
+            <div class="auth-form-group">
+                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit" class="auth-btn" id="loginBtn">
+                <span id="loginText" data-en="Sign In" data-sw="Ingia">Ingia</span>
+            </button>
+            <div class="auth-switch">
+                <p data-en="Don't have an account?" data-sw="Huna akaunti?">Huna akaunti? <a href="#" onclick="showAuthTab('signup')" data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</a></p>
+            </div>
+        </form>
+
+        <!-- Role Selection for Signup -->
+        <div id="roleSelection" class="hidden">
+            <h2 style="margin-bottom: 1.5rem; color: #1f2937; text-align: center;" data-en="Choose Your Role" data-sw="Chagua Jukumu Lako">Chagua Jukumu Lako</h2>
+            <div class="role-selection">
+                <div class="role-option" onclick="selectRole('employee')">
+                    <div class="role-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4 data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</h4>
+                    <p data-en="Find work opportunities" data-sw="Tafuta fursa za kazi">Tafuta fursa za kazi</p>
                 </div>
-                
-                <div class="blog-grid" id="blogContent">
-                    <div class="blog-card">
-                        <div class="blog-title" data-en="How to Prepare for a Job Interview" data-sw="Jinsi ya Kujiandaa kwa Mahojiano ya Kazi">Jinsi ya Kujiandaa kwa Mahojiano ya Kazi</div>
-                        <div class="blog-content" data-en="Learn the best practices for job interviews and how to make a great impression on potential employers." data-sw="Jifunze mazoea bora kwa mahojiano ya kazi na jinsi ya kutoa hisia nzuri kwa waajiri wanaowezekana.">
-                            Jifunze mazoea bora kwa mahojiano ya kazi na jinsi ya kutoa hisia nzuri kwa waajiri wanaowezekana.
-                        </div>
+                <div class="role-option" onclick="selectRole('employer')">
+                    <div class="role-icon">
+                        <i class="fas fa-briefcase"></i>
                     </div>
-                    <div class="blog-card">
-                        <div class="blog-title" data-en="Building Your Professional Skills" data-sw="Kujenga Ujuzi Wako wa Kitaaluma">Kujenga Ujuzi Wako wa Kitaaluma</div>
-                        <div class="blog-content" data-en="Discover ways to improve your skills and become more valuable in the job market." data-sw="Gundua njia za kuboresha ujuzi wako na kuwa wa thamani zaidi kwenye soko la kazi.">
-                            Gundua njia za kuboresha ujuzi wako na kuwa wa thamani zaidi kwenye soko la kazi.
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <div class="blog-title" data-en="Workplace Safety Tips" data-sw="Vidokezo vya Usalama Mahali pa Kazi">Vidokezo vya Usalama Mahali pa Kazi</div>
-                        <div class="blog-content" data-en="Important safety guidelines to follow in various work environments to ensure your wellbeing." data-sw="Miongozo muhimu ya usalama kufuata katika mazingira mbalimbali ya kazi kuhakikisha ustawi wako.">
-                            Miongozo muhimu ya usalama kufuata katika mazingira mbalimbali ya kazi kuhakikisha ustawi wako.
-                        </div>
-                    </div>
+                    <h4 data-en="Employer" data-sw="Mwajiri">Mwajiri</h4>
+                    <p data-en="Hire workers" data-sw="Ajiri wafanyikazi">Ajiri wafanyikazi</p>
                 </div>
             </div>
-        </section>
-
-        <!-- Jobs Section -->
-        <section id="jobsSection" style="display: none;">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-briefcase"></i>
-                    <h2 data-en="Available Job Opportunities" data-sw="Fursa za Kazi Zilizopo">Fursa za Kazi Zilizopo</h2>
-                </div>
-                
-                <div class="job-grid" id="jobListings">
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> <span data-en="Loading jobs..." data-sw="Inapakia kazi...">Inapakia kazi...</span>
-                    </div>
-                </div>
+            <div class="auth-switch">
+                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a href="#" onclick="showAuthTab('login')" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
             </div>
-        </section>
+        </div>
 
-        <!-- Profile Section -->
-        <section id="profileSection" style="display: none;">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-user"></i>
-                    <h2 data-en="My Profile" data-sw="Wasifu Wangu">Wasifu Wangu</h2>
-                </div>
-                
-                <div id="profileContent">
-                    <!-- Profile content will be loaded here -->
-                </div>
+        <!-- Sign Up Form -->
+        <form id="signupForm" class="auth-form hidden">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</h2>
+            
+            <div class="auth-form-group">
+                <label id="nameLabel" data-en="Full Name *" data-sw="Jina Kamili *">Jina Kamili *</label>
+                <input type="text" id="signupName" required>
             </div>
-        </section>
+            <div class="auth-form-group">
+                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
+                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)">
+                <div class="phone-error" id="phoneError" data-en="This phone number is already registered" data-sw="Nambari hii ya simu tayari imesajiliwa">
+                    Nambari hii ya simu tayari imesajiliwa
+                </div>
+                <small style="color: #666; font-size: 0.75rem;" data-en="Format: 0712345678 or 254712345678" data-sw="Muundo: 0712345678 au 254712345678">Muundo: 0712345678 au 254712345678</small>
+            </div>
+            <div class="auth-form-group">
+                <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
+                <input type="text" id="signupLocation" required>
+            </div>
+            <div class="auth-form-group" id="specializationGroup">
+                <label data-en="Area of Specialization" data-sw="Eneo la Utaalamu">Eneo la Utaalamu</label>
+                <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction, Driving" data-sw-placeholder="K.m. Kilimo, Ujenzi, Udereva">
+            </div>
+            <div class="auth-form-group" id="jobTypeGroup">
+                <label data-en="Type of Jobs Needed" data-sw="Aina ya Kazi Unazohitaji">Aina ya Kazi Unazohitaji</label>
+                <input type="text" id="signupJobType" data-en-placeholder="e.g., Farm Work, Domestic Help" data-sw-placeholder="K.m. Kazi ya Shambani, Kazi ya Nyumbani">
+            </div>
+            <div class="auth-form-group">
+                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
+                <input type="password" id="signupPassword" required minlength="6">
+            </div>
+            <div class="auth-form-group">
+                <label data-en="Confirm Password *" data-sw="Thibitisha Nenosiri *">Thibitisha Nenosiri *</label>
+                <input type="password" id="signupConfirmPassword" required>
+            </div>
+            <button type="submit" class="auth-btn" id="signupBtn">
+                <span id="signupText" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
+            </button>
+            <div class="auth-switch">
+                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a href="#" onclick="showAuthTab('login')" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
+            </div>
+        </form>
 
-        <!-- Post Job Section -->
-        <section id="postJobSection" style="display: none;">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-plus-circle"></i>
-                    <h2 data-en="Post a Job Opportunity" data-sw="Chapisha Fursa ya Kazi">Chapisha Fursa ya Kazi</h2>
-                </div>
-                
-                <form id="jobForm">
-                    <div class="form-group">
-                        <label data-en="Job Title *" data-sw="Kichwa cha Kazi *">Kichwa cha Kazi *</label>
-                        <input type="text" id="jobTitle" required data-en-placeholder="e.g., Farm Worker, Construction Helper" data-sw-placeholder="K.m. Mfanyakazi Shambani, Msaidizi Ujenzi">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label data-en="Job Description *" data-sw="Maelezo ya Kazi *">Maelezo ya Kazi *</label>
-                        <textarea id="jobDescription" required rows="4" data-en-placeholder="Describe the job responsibilities and requirements..." data-sw-placeholder="Eleza majukumu ya kazi na mahitaji..."></textarea>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
-                            <input type="text" id="jobLocation" required data-en-placeholder="e.g., Nairobi, Nakuru" data-sw-placeholder="K.m. Nairobi, Nakuru">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Category" data-sw="Kategoria">Kategoria</label>
-                            <select id="jobCategory">
-                                <option value="general" data-en="General" data-sw="Jumla">Jumla</option>
-                                <option value="agriculture" data-en="Agriculture" data-sw="Kilimo">Kilimo</option>
-                                <option value="construction" data-en="Construction" data-sw="Ujenzi">Ujenzi</option>
-                                <option value="domestic" data-en="Domestic Work" data-sw="Kazi ya Nyumbani">Kazi ya Nyumbani</option>
-                                <option value="driving" data-en="Driving" data-sw="Udereva">Udereva</option>
-                                <option value="retail" data-en="Retail" data-sw="Biashara">Biashara</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label data-en="Phone Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
-                            <input type="tel" id="jobPhone" required data-en-placeholder="0712345678" data-sw-placeholder="0712345678">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Business Type" data-sw="Aina ya Biashara">Aina ya Biashara</label>
-                            <input type="text" id="businessType" data-en-placeholder="e.g., Farm, Construction Company" data-sw-placeholder="K.m. Shamba, Kampuni ya Ujenzi">
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-paper-plane"></i> <span data-en="Post Job" data-sw="Chapisha Kazi">Chapisha Kazi</span>
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- My Jobs Section (for employers) -->
-        <section id="myJobsSection" style="display: none;">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-list"></i>
-                    <h2 data-en="My Posted Jobs" data-sw="Kazi Nilizochapisha">Kazi Nilizochapisha</h2>
-                </div>
-                
-                <div class="job-grid" id="myJobsListings">
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> <span data-en="Loading your jobs..." data-sw="Inapakia kazi zako...">Inapakia kazi zako...</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Employees Section -->
-        <section id="employeesSection" style="display: none;">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fas fa-users"></i>
-                    <h2 data-en="Available Workers" data-sw="Wafanyikazi Walioopo">Wafanyikazi Walioopo</h2>
-                </div>
-                
-                <div class="job-grid" id="employeeListings">
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> <span data-en="Loading workers..." data-sw="Inapakia wafanyikazi...">Inapakia wafanyikazi...</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Message Display -->
+        <div id="messageContainer"></div>
     </div>
 
     <script>
+        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
-        let currentUser = null;
+        let selectedRole = null;
         let currentLanguage = 'sw';
-        let currentJobs = [];
-        let currentEmployees = [];
-        let myPostedJobs = [];
+        let phoneExists = false;
 
-        // Check authentication on page load
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const roleSelection = document.getElementById('roleSelection');
+        const signupForm = document.getElementById('signupForm');
+        const messageContainer = document.getElementById('messageContainer');
+        const phoneError = document.getElementById('phoneError');
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            checkAuthentication();
-        });
-
-        function checkAuthentication() {
+            // Check if user is already logged in
             const token = localStorage.getItem('token');
-            const userData = localStorage.getItem('user');
-            
-            if (!token || !userData) {
-                window.location.href = 'auth.html';
+            if (token) {
+                window.location.href = 'index.html';
                 return;
             }
-            
-            try {
-                currentUser = JSON.parse(userData);
-                
-                // Set language from localStorage or default to Swahili
-                const savedLanguage = localStorage.getItem('preferredLanguage');
-                if (savedLanguage) {
-                    currentLanguage = savedLanguage;
-                }
-                updateLanguageDisplay();
-                translatePage();
-                
-                initializeApp();
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-                logout();
+
+            // Set initial language
+            const savedLanguage = localStorage.getItem('preferredLanguage');
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
             }
+            updateLanguageDisplay();
+            translatePage();
+
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            loginForm.addEventListener('submit', handleLogin);
+            signupForm.addEventListener('submit', handleSignUp);
         }
 
-        function initializeApp() {
-            // Update UI with user info
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' ? `Welcome ${currentUser.name}!` : `Karibu ${currentUser.name}!`;
-            
-            // Show/hide features based on role
-            if (currentUser.role === 'employer') {
-                document.getElementById('postJobNav').style.display = 'block';
-                document.getElementById('myJobsNav').style.display = 'block';
-                document.getElementById('employeesNav').style.display = 'block';
+        function showAuthTab(tab) {
+            // Update tabs
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+            }
+
+            // Show appropriate forms
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                roleSelection.classList.add('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                loginForm.classList.add('hidden');
+                roleSelection.classList.remove('hidden');
+                signupForm.classList.add('hidden');
             }
             
-            // Load initial data
-            loadJobs();
-            loadEmployees();
-            if (currentUser.role === 'employer') {
-                loadMyJobs();
+            clearMessages();
+        }
+
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Update form based on role
+            const nameLabel = document.getElementById('nameLabel');
+            const specializationGroup = document.getElementById('specializationGroup');
+            const jobTypeGroup = document.getElementById('jobTypeGroup');
+            
+            if (role === 'employee') {
+                if (currentLanguage === 'en') {
+                    nameLabel.textContent = 'Full Name *';
+                } else {
+                    nameLabel.textContent = 'Jina Kamili *';
+                }
+                specializationGroup.style.display = 'block';
+                jobTypeGroup.style.display = 'none';
+            } else {
+                if (currentLanguage === 'en') {
+                    nameLabel.textContent = 'Business/Organization Name *';
+                } else {
+                    nameLabel.textContent = 'Jina la Biashara/Shirika *';
+                }
+                specializationGroup.style.display = 'none';
+                jobTypeGroup.style.display = 'block';
             }
             
-            // Setup event listeners
-            document.getElementById('jobForm').addEventListener('submit', handleJobPost);
+            // Show signup form
+            roleSelection.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+        }
+
+        // Phone number validation
+        async function checkPhoneExists(phone) {
+            if (!phone || phone.length < 10) return;
+
+            const cleanPhone = formatPhoneToStandard(phone);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/check-phone`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone: cleanPhone })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.exists) {
+                        phoneExists = true;
+                        phoneError.style.display = 'block';
+                        document.getElementById('signupBtn').disabled = true;
+                    } else {
+                        phoneExists = false;
+                        phoneError.style.display = 'none';
+                        document.getElementById('signupBtn').disabled = false;
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking phone:', error);
+                phoneExists = false;
+                phoneError.style.display = 'none';
+                document.getElementById('signupBtn').disabled = false;
+            }
         }
 
         // Language functions
@@ -725,9 +536,6 @@
             localStorage.setItem('preferredLanguage', currentLanguage);
             updateLanguageDisplay();
             translatePage();
-            
-            // Update welcome message
-            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' ? `Welcome ${currentUser.name}!` : `Karibu ${currentUser.name}!`;
         }
 
         function updateLanguageDisplay() {
@@ -765,433 +573,265 @@
             });
         }
 
-        async function loadJobs() {
-            try {
-                console.log('Loading jobs from:', `${API_BASE_URL}/jobs`);
-                const response = await fetch(`${API_BASE_URL}/jobs`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentJobs = data.jobs;
-                    displayJobs();
-                } else {
-                    throw new Error('Failed to load jobs');
-                }
-            } catch (error) {
-                console.error('Error loading jobs:', error);
-                document.getElementById('jobListings').innerHTML = `
-                    <div class="message error">
-                        <i class="fas fa-exclamation-triangle"></i> 
-                        <span data-en="Failed to load jobs. Please try again later." data-sw="Imeshindikana kupakia kazi. Tafadhali jaribu tena baadaye.">
-                            Imeshindikana kupakia kazi. Tafadhali jaribu tena baadaye.
-                        </span>
-                    </div>
-                `;
-                translatePage();
-            }
-        }
-
-        async function loadMyJobs() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/jobs/my-jobs`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    myPostedJobs = data.jobs;
-                    displayMyJobs();
-                } else {
-                    throw new Error('Failed to load your jobs');
-                }
-            } catch (error) {
-                console.error('Error loading my jobs:', error);
-                document.getElementById('myJobsListings').innerHTML = `
-                    <div class="message error">
-                        <i class="fas fa-exclamation-triangle"></i> 
-                        <span data-en="Failed to load your jobs." data-sw="Imeshindikana kupakia kazi zako.">
-                            Imeshindikana kupakia kazi zako.
-                        </span>
-                    </div>
-                `;
-                translatePage();
-            }
-        }
-
-        async function loadEmployees() {
-            try {
-                console.log('Loading employees from:', `${API_BASE_URL}/employees`);
-                const response = await fetch(`${API_BASE_URL}/employees`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentEmployees = data.employees;
-                    displayEmployees();
-                } else {
-                    throw new Error('Failed to load employees');
-                }
-            } catch (error) {
-                console.error('Error loading employees:', error);
-            }
-        }
-
-        function displayJobs() {
-            const container = document.getElementById('jobListings');
-            
-            if (currentJobs.length === 0) {
-                container.innerHTML = `
-                    <div class="message">
-                        <i class="fas fa-info-circle"></i> 
-                        <span data-en="No jobs available at the moment. Check back later!" data-sw="Hakuna kazi zinazopatikana kwa sasa. Angalia tena baadaye!">
-                            Hakuna kazi zinazopatikana kwa sasa. Angalia tena baadaye!
-                        </span>
-                    </div>
-                `;
-                translatePage();
-                return;
-            }
-            
-            container.innerHTML = currentJobs.map(job => `
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="job-title">${job.title}</div>
-                        <div class="job-category">${job.category}</div>
-                    </div>
-                    <div class="job-description">${job.description}</div>
-                    <div class="job-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${job.location}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-building"></i>
-                            <span>${job.businessType || 'Individual'}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>${new Date(job.postedDate).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                    <div class="communication">
-                        <a href="tel:${job.phone}" class="btn btn-call">
-                            <i class="fas fa-phone"></i> <span data-en="Call" data-sw="Piga Simu">Piga Simu</span>
-                        </a>
-                        <a href="https://wa.me/${job.phone}?text=Hi, I am interested in the ${job.title} position" 
-                           class="btn btn-whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-            translatePage();
-        }
-
-        function displayMyJobs() {
-            const container = document.getElementById('myJobsListings');
-            
-            if (myPostedJobs.length === 0) {
-                container.innerHTML = `
-                    <div class="message">
-                        <i class="fas fa-info-circle"></i> 
-                        <span data-en="You haven't posted any jobs yet." data-sw="Hujachapisha kazi yoyote bado.">
-                            Hujachapisha kazi yoyote bado.
-                        </span>
-                    </div>
-                `;
-                translatePage();
-                return;
-            }
-            
-            container.innerHTML = myPostedJobs.map(job => `
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="job-title">${job.title}</div>
-                        <div class="job-category">${job.category}</div>
-                    </div>
-                    <div class="job-description">${job.description}</div>
-                    <div class="job-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${job.location}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-building"></i>
-                            <span>${job.businessType || 'Individual'}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>${new Date(job.postedDate).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                    <div class="communication">
-                        <button class="btn btn-edit" onclick="editJob('${job._id}')">
-                            <i class="fas fa-edit"></i> <span data-en="Edit" data-sw="Hariri">Hariri</span>
-                        </button>
-                        <button class="btn btn-delete" onclick="deleteJob('${job._id}')">
-                            <i class="fas fa-trash"></i> <span data-en="Delete" data-sw="Futa">Futa</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            translatePage();
-        }
-
-        function displayEmployees() {
-            const container = document.getElementById('employeeListings');
-            
-            if (!currentEmployees || currentEmployees.length === 0) {
-                container.innerHTML = `
-                    <div class="message">
-                        <i class="fas fa-info-circle"></i> 
-                        <span data-en="No workers available at the moment." data-sw="Hakuna wafanyikazi walioopo kwa sasa.">
-                            Hakuna wafanyikazi walioopo kwa sasa.
-                        </span>
-                    </div>
-                `;
-                translatePage();
-                return;
-            }
-            
-            container.innerHTML = currentEmployees.map(employee => `
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="job-title">${employee.name}</div>
-                        <div class="job-category">${employee.role === 'employee' ? 'Job Seeker' : 'Employer'}</div>
-                    </div>
-                    <div class="job-description">
-                        <strong data-en="Specialization:" data-sw="Utaalamu:">Utaalamu:</strong> ${employee.specialization || 'General worker'}
-                    </div>
-                    <div class="job-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${employee.location}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-phone"></i>
-                            <span>${employee.phone}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span data-en="Joined" data-sw="Alijiunga">Alijiunga</span> ${new Date(employee.joinDate).toLocaleDateString()}
-                        </div>
-                    </div>
-                    <div class="communication">
-                        <a href="tel:${employee.phone}" class="btn btn-call">
-                            <i class="fas fa-phone"></i> <span data-en="Call" data-sw="Piga Simu">Piga Simu</span>
-                        </a>
-                        <a href="https://wa.me/${employee.phone}?text=Hi, I have a job opportunity for you" 
-                           class="btn btn-whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-            translatePage();
-        }
-
-        async function handleJobPost(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             
-            if (currentUser.role !== 'employer') {
-                alert(currentLanguage === 'en' ? 'Only employers can post jobs' : 'Ni waajiri pekee wanaoweza kuchapisha kazi');
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!phone || !password) {
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Please enter phone number and password'
+                        : 'Tafadhali weka nambari ya simu na nenosiri',
+                    'error'
+                );
                 return;
             }
             
-            const jobData = {
-                title: document.getElementById('jobTitle').value.trim(),
-                description: document.getElementById('jobDescription').value.trim(),
-                location: document.getElementById('jobLocation').value.trim(),
-                category: document.getElementById('jobCategory').value,
-                phone: document.getElementById('jobPhone').value.trim(),
-                businessType: document.getElementById('businessType').value.trim() || currentUser.name,
-                employerId: currentUser._id,
-                employerName: currentUser.name
-            };
+            const cleanPhone = formatPhoneToStandard(phone);
             
-            // Format phone number
-            jobData.phone = formatPhoneToStandard(jobData.phone);
+            // Show loading state
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            loginBtn.disabled = true;
+            if (currentLanguage === 'en') {
+                loginText.innerHTML = '<div class="loading"></div> Signing In...';
+            } else {
+                loginText.innerHTML = '<div class="loading"></div> Inaingia...';
+            }
             
             try {
-                console.log('Posting job to:', `${API_BASE_URL}/jobs`);
-                console.log('Job data:', jobData);
-                
-                const response = await fetch(`${API_BASE_URL}/jobs`, {
+                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(jobData)
+                    body: JSON.stringify({
+                        phone: cleanPhone,
+                        password: password
+                    })
                 });
                 
-                const data = await response.json();
-                console.log('Job post response:', data);
+                const contentType = response.headers.get('content-type');
+                let data;
                 
-                if (data.success) {
-                    alert(currentLanguage === 'en' ? 'Job posted successfully!' : 'Kazi imechapishwa kikamilifu!');
-                    document.getElementById('jobForm').reset();
-                    loadJobs();
-                    loadMyJobs();
-                    showSection('myjobs');
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
                 } else {
-                    throw new Error(data.error || 'Failed to post job');
+                    const text = await response.text();
+                    throw new Error('Server error');
                 }
+                
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showMessage(
+                        currentLanguage === 'en'
+                            ? 'Welcome back! Redirecting...'
+                            : 'Karibu tena! Unaongoza...',
+                        'success'
+                    );
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                    
+                } else {
+                    let errorMessage;
+                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                        errorMessage = currentLanguage === 'en' 
+                            ? 'Invalid phone number or password' 
+                            : 'Nambari ya simu au nenosiri si sahihi';
+                    } else {
+                        errorMessage = data.error || 'Sign in failed';
+                    }
+                    throw new Error(errorMessage);
+                }
+                
             } catch (error) {
-                console.error('Error posting job:', error);
-                alert(currentLanguage === 'en' ? 'Failed to post job. Please try again.' : 'Imeshindikana kuchapisha kazi. Tafadhali jaribu tena.');
+                showMessage(error.message, 'error');
+            } finally {
+                loginBtn.disabled = false;
+                if (currentLanguage === 'en') {
+                    loginText.textContent = 'Sign In';
+                } else {
+                    loginText.textContent = 'Ingia';
+                }
             }
         }
 
-        async function editJob(jobId) {
-            const job = myPostedJobs.find(j => j._id === jobId);
-            if (!job) return;
+        async function handleSignUp(e) {
+            e.preventDefault();
             
-            // For now, we'll just show an alert. In a real app, you'd show a form to edit
-            alert(currentLanguage === 'en' 
-                ? `Edit functionality for job: ${job.title}` 
-                : `Utendaji wa kuhariri kwa kazi: ${job.title}`);
+            const phone = document.getElementById('signupPhone').value.trim();
+            if (phone) {
+                await checkPhoneExists(phone);
+            }
             
-            // In a full implementation, you would:
-            // 1. Show a pre-filled form with job details
-            // 2. Send PUT request to update the job
-            // 3. Refresh the job listings
-        }
-
-        async function deleteJob(jobId) {
-            if (!confirm(currentLanguage === 'en' 
-                ? 'Are you sure you want to delete this job?' 
-                : 'Una uhakika unataka kufuta kazi hii?')) {
+            if (phoneExists) {
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'This phone number is already registered. Please use a different number or sign in.' 
+                        : 'Nambari hii ya simu tayari imesajiliwa. Tafadhali tumia nambari tofauti au ingia.',
+                    'error'
+                );
                 return;
             }
             
+            const name = document.getElementById('signupName').value.trim();
+            const location = document.getElementById('signupLocation').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validation
+            if (!name || !phone || !location || !password) {
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Please fill in all required fields' 
+                        : 'Tafadhali jaza sehemu zote zinazohitajika',
+                    'error'
+                );
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Password must be at least 6 characters long'
+                        : 'Nenosiri lazima liwe na herufi angalau 6',
+                    'error'
+                );
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Passwords do not match'
+                        : 'Nenosiri halifanani',
+                    'error'
+                );
+                return;
+            }
+            
+            if (!selectedRole) {
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Please select a role'
+                        : 'Tafadhali chagua jukumu',
+                    'error'
+                );
+                return;
+            }
+            
+            const cleanPhone = formatPhoneToStandard(phone);
+            
+            // Prepare user data
+            const userData = {
+                name: name,
+                phone: cleanPhone,
+                location: location,
+                password: password,
+                role: selectedRole
+            };
+            
+            // Add optional fields based on role
+            if (selectedRole === 'employee') {
+                userData.specialization = document.getElementById('signupSpecialization').value.trim();
+            } else {
+                userData.jobType = document.getElementById('signupJobType').value.trim();
+            }
+            
+            // Show loading state
+            const signupBtn = document.getElementById('signupBtn');
+            const signupText = document.getElementById('signupText');
+            signupBtn.disabled = true;
+            if (currentLanguage === 'en') {
+                signupText.innerHTML = '<div class="loading"></div> Creating Account...';
+            } else {
+                signupText.innerHTML = '<div class="loading"></div> Inafungua Akaunti...';
+            }
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
-                    method: 'DELETE',
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
                 });
                 
-                const data = await response.json();
+                const contentType = response.headers.get('content-type');
+                let data;
                 
-                if (data.success) {
-                    alert(currentLanguage === 'en' ? 'Job deleted successfully!' : 'Kazi imefutwa kikamilifu!');
-                    loadMyJobs();
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
                 } else {
-                    throw new Error(data.error || 'Failed to delete job');
+                    const text = await response.text();
+                    throw new Error('Server error');
                 }
+                
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showMessage(
+                        currentLanguage === 'en'
+                            ? 'Account created successfully! Redirecting...'
+                            : 'Akaunti imefunguliwa kikamilifu! Unaongoza...',
+                        'success'
+                    );
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                    
+                } else {
+                    if (data.error && data.error.includes('already exists')) {
+                        phoneExists = true;
+                        phoneError.style.display = 'block';
+                        document.getElementById('signupBtn').disabled = true;
+                        throw new Error(
+                            currentLanguage === 'en'
+                                ? 'This phone number is already registered'
+                                : 'Nambari hii ya simu tayari imesajiliwa'
+                        );
+                    } else {
+                        throw new Error(data.error || 'Sign up failed');
+                    }
+                }
+                
             } catch (error) {
-                console.error('Error deleting job:', error);
-                alert(currentLanguage === 'en' ? 'Failed to delete job.' : 'Imeshindikana kufuta kazi.');
+                showMessage(error.message, 'error');
+            } finally {
+                signupBtn.disabled = false;
+                if (currentLanguage === 'en') {
+                    signupText.textContent = 'Create Account';
+                } else {
+                    signupText.textContent = 'Fungua Akaunti';
+                }
             }
         }
 
-        function showSection(section) {
-            // Hide all sections
-            document.getElementById('homeSection').style.display = 'none';
-            document.getElementById('jobsSection').style.display = 'none';
-            document.getElementById('profileSection').style.display = 'none';
-            document.getElementById('postJobSection').style.display = 'none';
-            document.getElementById('myJobsSection').style.display = 'none';
-            document.getElementById('employeesSection').style.display = 'none';
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/\D/g, '');
             
-            // Remove active class from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Show selected section and set active nav
-            if (section === 'home') {
-                document.getElementById('homeSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[0].classList.add('active');
-            } else if (section === 'jobs') {
-                document.getElementById('jobsSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[1].classList.add('active');
-            } else if (section === 'profile') {
-                document.getElementById('profileSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[2].classList.add('active');
-                loadProfile();
-            } else if (section === 'post') {
-                document.getElementById('postJobSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[3].classList.add('active');
-            } else if (section === 'myjobs') {
-                document.getElementById('myJobsSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[4].classList.add('active');
-            } else if (section === 'employees') {
-                document.getElementById('employeesSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[5].classList.add('active');
+            if (value.startsWith('254')) {
+                value = '0' + value.substring(3);
             }
-        }
-
-        function loadProfile() {
-            const profileContent = document.getElementById('profileContent');
-            profileContent.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <div>
-                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);" data-en="Personal Information" data-sw="Taarifa Binafsi">Taarifa Binafsi</h3>
-                        <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 8px;">
-                            <div style="margin-bottom: 1rem;">
-                                <strong data-en="Name:" data-sw="Jina:">Jina:</strong> ${currentUser.name}
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <strong data-en="Phone:" data-sw="Simu:">Simu:</strong> ${currentUser.phone}
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <strong data-en="Location:" data-sw="Eneo:">Eneo:</strong> ${currentUser.location}
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <strong data-en="Role:" data-sw="Jukumu:">Jukumu:</strong> ${currentUser.role === 'employee' ? 'Job Seeker' : 'Employer'}
-                            </div>
-                            ${currentUser.specialization ? `
-                                <div style="margin-bottom: 1rem;">
-                                    <strong data-en="Specialization:" data-sw="Utaalamu:">Utaalamu:</strong> ${currentUser.specialization}
-                                </div>
-                            ` : ''}
-                            ${currentUser.jobType ? `
-                                <div style="margin-bottom: 1rem;">
-                                    <strong data-en="Job Types:" data-sw="Aina za Kazi:">Aina za Kazi:</strong> ${currentUser.jobType}
-                                </div>
-                            ` : ''}
-                            <div style="margin-bottom: 1rem;">
-                                <strong data-en="Member since:" data-sw="Mwanachama tangu:">Mwanachama tangu:</strong> ${new Date(currentUser.joinDate).toLocaleDateString()}
-                            </div>
-                        </div>
-                        <button class="btn-primary" onclick="editProfile()" style="margin-top: 1rem;">
-                            <i class="fas fa-edit"></i> <span data-en="Edit Profile" data-sw="Hariri Wasifu">Hariri Wasifu</span>
-                        </button>
-                    </div>
-                    <div>
-                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);" data-en="Account Actions" data-sw="Vitendo za Akaunti">Vitendo za Akaunti</h3>
-                        <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 8px;">
-                            <p style="margin-bottom: 1rem;" data-en="Manage your account and preferences" data-sw="Dhibiti akaunti yako na mapendeleo">Dhibiti akaunti yako na mapendeleo</p>
-                            <button class="btn-logout" onclick="logout()" style="width: 100%; margin-bottom: 0.5rem;">
-                                <i class="fas fa-sign-out-alt"></i> <span data-en="Sign Out" data-sw="Toka">Toka</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            translatePage();
-        }
-
-        function editProfile() {
-            // For now, show a simple alert. In a real app, you'd show a form to edit profile
-            alert(currentLanguage === 'en' 
-                ? 'Profile editing functionality would open here' 
-                : 'Utendaji wa kuhariri wasifu ungefunguliwa hapa');
             
-            // In a full implementation, you would:
-            // 1. Show a form with current user data
-            // 2. Send PUT request to update user profile
-            // 3. Update localStorage and refresh the profile section
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            
+            input.value = value;
         }
 
         function formatPhoneToStandard(phone) {
             let cleanPhone = phone.replace(/\D/g, '');
             
-            // Convert to 254 format for backend
             if (cleanPhone.startsWith('0')) {
                 cleanPhone = '254' + cleanPhone.substring(1);
             } else if (!cleanPhone.startsWith('254')) {
@@ -1201,19 +841,23 @@
             return cleanPhone;
         }
 
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = 'auth.html';
+        function showMessage(message, type) {
+            messageContainer.innerHTML = `
+                <div class="message ${type}">
+                    ${message}
+                </div>
+            `;
+        }
+
+        function clearMessages() {
+            messageContainer.innerHTML = '';
         }
 
         // Global functions
-        window.showSection = showSection;
-        window.logout = logout;
+        window.showAuthTab = showAuthTab;
+        window.selectRole = selectRole;
         window.toggleLanguage = toggleLanguage;
-        window.editJob = editJob;
-        window.deleteJob = deleteJob;
-        window.editProfile = editProfile;
+        window.checkPhoneExists = checkPhoneExists;
     </script>
 </body>
 </html>
