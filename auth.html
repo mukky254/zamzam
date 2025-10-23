@@ -6,6 +6,7 @@
     <title>Kazi Mashinani - Sign In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* YOUR EXACT CSS - UNCHANGED */
         * {
             margin: 0;
             padding: 0;
@@ -242,6 +243,7 @@
     </style>
 </head>
 <body>
+    <!-- YOUR EXACT HTML - UNCHANGED -->
     <div class="auth-container">
         <div class="auth-logo">
             <i class="fas fa-hands-helping"></i>
@@ -349,7 +351,6 @@
         // Configuration - Your Render backend URL
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
-        let useDemoMode = false;
 
         // DOM Elements
         const roleSelection = document.getElementById('roleSelection');
@@ -366,9 +367,6 @@
                 window.location.href = 'index.html';
             }
 
-            // Test backend connection
-            testBackendConnection();
-            
             setupEventListeners();
         });
 
@@ -378,27 +376,6 @@
             
             // Sign in form submission
             signinForm.addEventListener('submit', handleSignIn);
-        }
-
-        async function testBackendConnection() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/health`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Backend not responding');
-                }
-                
-                useDemoMode = false;
-                console.log('Backend connection successful');
-            } catch (error) {
-                console.log('Backend connection failed, using demo mode');
-                useDemoMode = true;
-            }
         }
 
         function selectRole(role) {
@@ -478,6 +455,22 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
+            // Prepare user data according to your backend schema
+            const userData = {
+                name: name,
+                phone: cleanPhone,
+                location: location,
+                password: password,
+                role: selectedRole
+            };
+            
+            // Add optional fields based on role
+            if (selectedRole === 'employee') {
+                userData.specialization = document.getElementById('signupSpecialization').value.trim();
+            } else {
+                userData.jobType = document.getElementById('signupJobType').value.trim();
+            }
+            
             // Show loading state
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
@@ -485,85 +478,33 @@
             signupText.innerHTML = '<div class="loading"></div> Creating Account...';
             
             try {
-                let success = false;
-                let userData = null;
+                console.log('Sending signup request to:', `${API_BASE_URL}/auth/signup`);
+                
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
 
-                if (useDemoMode) {
-                    // Demo mode - store in localStorage
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    
-                    userData = {
-                        id: Date.now(),
-                        name: name,
-                        phone: cleanPhone,
-                        location: location,
-                        role: selectedRole,
-                        specialization: document.getElementById('signupSpecialization').value.trim(),
-                        jobType: document.getElementById('signupJobType').value.trim(),
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    // Save to local storage for demo
-                    const users = JSON.parse(localStorage.getItem('demo_users') || '[]');
-                    
-                    // Check if phone already exists
-                    const phoneExists = users.some(user => user.phone === cleanPhone);
-                    if (phoneExists) {
-                        throw new Error('Phone number already registered');
-                    }
-                    
-                    users.push({...userData, password: password});
-                    localStorage.setItem('demo_users', JSON.stringify(users));
-                    
-                    success = true;
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
                 } else {
-                    // Real backend signup
-                    const userDataToSend = {
-                        name: name,
-                        phone: cleanPhone,
-                        location: location,
-                        password: password,
-                        role: selectedRole
-                    };
-                    
-                    // Add optional fields based on role
-                    if (selectedRole === 'employee') {
-                        userDataToSend.specialization = document.getElementById('signupSpecialization').value.trim();
-                    } else {
-                        userDataToSend.jobType = document.getElementById('signupJobType').value.trim();
-                    }
-
-                    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(userDataToSend)
-                    });
-
-                    // Handle response
-                    const contentType = response.headers.get('content-type');
-                    let data;
-                    
-                    if (contentType && contentType.includes('application/json')) {
-                        data = await response.json();
-                    } else {
-                        const text = await response.text();
-                        throw new Error(`Server error: ${text}`);
-                    }
-                    
-                    if (response.ok && data.success) {
-                        success = true;
-                        userData = data.user;
-                    } else {
-                        throw new Error(data.error || data.message || 'Sign up failed');
-                    }
+                    const text = await response.text();
+                    throw new Error('Server returned non-JSON response');
                 }
-
-                if (success) {
-                    // Store user data
-                    localStorage.setItem('token', 'token-' + Date.now());
-                    localStorage.setItem('user', JSON.stringify(userData));
+                
+                console.log('Signup response:', data);
+                
+                if (response.ok && data.success) {
+                    // Store token and user data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     
                     showMessage('Account created successfully! Redirecting...', 'success');
                     
@@ -571,11 +512,14 @@
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 2000);
+                    
+                } else {
+                    throw new Error(data.error || data.message || 'Sign up failed');
                 }
                 
             } catch (error) {
                 console.error('Sign up error:', error);
-                showMessage(error.message || 'Network error. Please try again.', 'error');
+                showMessage(error.message || 'Network error. Please check your connection and try again.', 'error');
             } finally {
                 // Reset button state
                 signupBtn.disabled = false;
@@ -603,59 +547,36 @@
             signinText.innerHTML = '<div class="loading"></div> Signing In...';
             
             try {
-                let success = false;
-                let userData = null;
+                console.log('Sending signin request to:', `${API_BASE_URL}/auth/signin`);
+                
+                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone: cleanPhone,
+                        password: password
+                    })
+                });
 
-                if (useDemoMode) {
-                    // Demo mode - check localStorage
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    const users = JSON.parse(localStorage.getItem('demo_users') || '[]');
-                    const user = users.find(u => u.phone === cleanPhone && u.password === password);
-                    
-                    if (user) {
-                        success = true;
-                        // Remove password from user data before storing
-                        const {password, ...userWithoutPassword} = user;
-                        userData = userWithoutPassword;
-                    } else {
-                        throw new Error('Invalid phone number or password');
-                    }
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
                 } else {
-                    // Real backend login
-                    const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            phone: cleanPhone,
-                            password: password
-                        })
-                    });
-
-                    // Handle response
-                    const contentType = response.headers.get('content-type');
-                    let data;
-                    
-                    if (contentType && contentType.includes('application/json')) {
-                        data = await response.json();
-                    } else {
-                        const text = await response.text();
-                        throw new Error(`Server error: ${text}`);
-                    }
-                    
-                    if (response.ok && data.success) {
-                        success = true;
-                        userData = data.user;
-                    } else {
-                        throw new Error(data.error || data.message || 'Invalid phone number or password');
-                    }
+                    const text = await response.text();
+                    throw new Error('Server returned non-JSON response');
                 }
-
-                if (success) {
+                
+                console.log('Signin response:', data);
+                
+                if (response.ok && data.success) {
                     // Store token and user data
-                    localStorage.setItem('token', 'token-' + Date.now());
-                    localStorage.setItem('user', JSON.stringify(userData));
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     
                     showMessage('Welcome back! Redirecting...', 'success');
                     
@@ -663,11 +584,14 @@
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
+                    
+                } else {
+                    throw new Error(data.error || data.message || 'Invalid phone number or password');
                 }
                 
             } catch (error) {
                 console.error('Sign in error:', error);
-                showMessage(error.message || 'Network error. Please try again.', 'error');
+                showMessage(error.message || 'Network error. Please check your connection and try again.', 'error');
             } finally {
                 // Reset button state
                 signinBtn.disabled = false;
