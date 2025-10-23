@@ -355,7 +355,7 @@
         let currentLanguage = 'sw'; // Default to Swahili
         let phoneExists = false;
 
-        // Initialize language on page load
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             // Check for saved language preference
             const savedLanguage = localStorage.getItem('preferredLanguage');
@@ -554,14 +554,15 @@
                     })
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
+                console.log('Login response status:', response.status);
                 
-                if (contentType && contentType.includes('application/json')) {
+                let data;
+                try {
                     data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
+                    console.log('Login response data:', data);
+                } catch (parseError) {
+                    console.error('Error parsing response:', parseError);
+                    throw new Error('Server response error');
                 }
                 
                 if (response.ok && data.success) {
@@ -575,23 +576,25 @@
                         'success'
                     );
                     
+                    // Redirect immediately after successful login
                     setTimeout(() => {
                         window.location.href = 'index.html';
-                    }, 1500);
+                    }, 1000);
                     
                 } else {
                     let errorMessage;
-                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                    if (data.error && (data.error.includes('not found') || data.error.includes('invalid'))) {
                         errorMessage = currentLanguage === 'en' 
                             ? 'Invalid phone number or password' 
                             : 'Nambari ya simu au nenosiri si sahihi';
                     } else {
-                        errorMessage = data.error || 'Sign in failed';
+                        errorMessage = data.error || (currentLanguage === 'en' ? 'Sign in failed' : 'Imeshindwa kuingia');
                     }
                     throw new Error(errorMessage);
                 }
                 
             } catch (error) {
+                console.error('Login error:', error);
                 showMessage(error.message, 'error');
             } finally {
                 loginBtn.disabled = false;
@@ -694,14 +697,15 @@
                     body: JSON.stringify(userData)
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
+                console.log('Signup response status:', response.status);
                 
-                if (contentType && contentType.includes('application/json')) {
+                let data;
+                try {
                     data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
+                    console.log('Signup response data:', data);
+                } catch (parseError) {
+                    console.error('Error parsing response:', parseError);
+                    throw new Error('Server response error');
                 }
                 
                 if (response.ok && data.success) {
@@ -715,9 +719,10 @@
                         'success'
                     );
                     
+                    // Redirect immediately after successful signup
                     setTimeout(() => {
                         window.location.href = 'index.html';
-                    }, 2000);
+                    }, 1000);
                     
                 } else {
                     if (data.error && data.error.includes('already exists')) {
@@ -730,11 +735,12 @@
                                 : 'Nambari hii ya simu tayari imesajiliwa'
                         );
                     } else {
-                        throw new Error(data.error || 'Sign up failed');
+                        throw new Error(data.error || (currentLanguage === 'en' ? 'Sign up failed' : 'Imeshindwa kufungua akaunti'));
                     }
                 }
                 
             } catch (error) {
+                console.error('Signup error:', error);
                 showMessage(error.message, 'error');
             } finally {
                 signupBtn.disabled = false;
