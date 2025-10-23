@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Mashinani - Ingia</title>
+    <title>Kazi Mashinani - Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -23,42 +23,13 @@
         }
 
         .auth-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 450px;
-            text-align: center;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        .auth-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .auth-logo i {
-            font-size: 3rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .auth-logo h1 {
-            font-size: 2.5rem;
-            color: #1e3a8a;
-            margin: 0;
-        }
-
-        .auth-logo p {
-            color: #666;
-            margin-top: 0.5rem;
-            font-size: 1rem;
+            overflow: hidden;
+            position: relative;
         }
 
         .language-switcher {
@@ -67,73 +38,134 @@
             right: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 25px;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
         }
 
         .language-switcher:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: white;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .language-flag {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            overflow: hidden;
+        .auth-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            opacity: 0.9;
+        }
+
+        .auth-tabs {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
+            background: #f8fafc;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: #1e3a8a;
+            border-bottom: 3px solid #1e3a8a;
+        }
+
+        .auth-content {
+            padding: 2rem;
         }
 
         .auth-form {
-            text-align: left;
+            display: none;
         }
 
-        .auth-form-group {
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .auth-form-group label {
+        .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #1f2937;
+            color: #374151;
         }
 
-        .auth-form-group input, .auth-form-group select {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s ease;
         }
 
-        .auth-form-group input:focus, .auth-form-group select:focus {
+        .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .phone-error {
-            color: #dc2626;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            display: none;
+        .role-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .auth-btn {
+        .role-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option:hover {
+            border-color: #3b82f6;
+        }
+
+        .role-option.active {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .role-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #1e3a8a;
+        }
+
+        .btn {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -141,92 +173,47 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 1rem;
         }
 
-        .auth-btn:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .auth-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .auth-switch {
+        .auth-footer {
             text-align: center;
             margin-top: 1.5rem;
-            color: #666;
+            color: #6b7280;
         }
 
-        .auth-switch a {
+        .auth-footer a {
             color: #1e3a8a;
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .auth-switch a:hover {
-            text-decoration: underline;
-            background-color: rgba(30, 58, 138, 0.1);
-        }
-
-        .role-selection {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .role-option {
-            padding: 1.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .role-option:hover {
-            border-color: #60a5fa;
-            transform: translateY(-3px);
-        }
-
-        .role-option.active {
-            border-color: #1e3a8a;
-            background: #dbeafe;
-        }
-
-        .role-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .message {
             padding: 1rem;
-            margin: 1rem 0;
+            margin-bottom: 1rem;
             border-radius: 8px;
             text-align: center;
         }
 
         .success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
         }
 
         .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .hidden {
+            display: none;
         }
 
         .loading {
@@ -244,174 +231,158 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hidden {
+        .phone-error {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
             display: none;
         }
     </style>
 </head>
 <body>
-    <div class="language-switcher" onclick="toggleLanguage()">
-        <div class="language-flag">
-            <span id="currentFlag">🇰🇪</span>
-        </div>
-        <div class="language-name" id="currentLanguage">Kiswahili</div>
-    </div>
-
     <div class="auth-container">
-        <div class="auth-logo">
-            <i class="fas fa-hands-helping"></i>
-            <div>
-                <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
-                <p data-en="Connecting Rural Workers with Local Opportunities" data-sw="Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi">Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi</p>
-            </div>
+        <div class="language-switcher" onclick="toggleLanguage()">
+            <span id="currentFlag">🇰🇪</span>
+            <span id="currentLanguage">Kiswahili</span>
         </div>
 
-        <!-- Role Selection -->
-        <div id="roleSelection">
-            <h2 style="margin-bottom: 1.5rem; color: #1f2937;" data-en="Join as" data-sw="Jiunge kama">Jiunge kama</h2>
-            <div class="role-selection">
-                <div class="role-option" onclick="selectRole('employee')">
-                    <div class="role-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h4 data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</h4>
-                    <p data-en="Find work opportunities" data-sw="Tafuta fursa za kazi">Tafuta fursa za kazi</p>
-                </div>
-                <div class="role-option" onclick="selectRole('employer')">
-                    <div class="role-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h4 data-en="Employer" data-sw="Mwajiri">Mwajiri</h4>
-                    <p data-en="Hire workers" data-sw="Ajiri wafanyikazi">Ajiri wafanyikazi</p>
-                </div>
-            </div>
-            <div class="auth-switch">
-                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a onclick="showLoginForm()" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
-            </div>
+        <div class="auth-header">
+            <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
+            <p data-en="Connecting Rural Workers with Local Opportunities" data-sw="Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi">Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi</p>
         </div>
 
-        <!-- Sign Up Form -->
-        <form id="signupForm" class="auth-form hidden">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</h2>
-            <div class="auth-form-group">
-                <label id="nameLabel" data-en="Full Name *" data-sw="Jina Kamili *">Jina Kamili *</label>
-                <input type="text" id="signupName" required>
-            </div>
-            <div class="auth-form-group">
-                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
-                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)">
-                <div class="phone-error" id="phoneError" data-en="This phone number is already registered" data-sw="Nambari hii ya simu tayari imesajiliwa">
-                    Nambari hii ya simu tayari imesajiliwa
-                </div>
-                <small style="color: #666; font-size: 0.75rem;" data-en="Format: 0712345678 or 254712345678" data-sw="Muundo: 0712345678 au 254712345678">Muundo: 0712345678 au 254712345678</small>
-            </div>
-            <div class="auth-form-group">
-                <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
-                <input type="text" id="signupLocation" required>
-            </div>
-            <div class="auth-form-group" id="specializationGroup">
-                <label data-en="Area of Specialization" data-sw="Eneo la Utaalamu">Eneo la Utaalamu</label>
-                <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction, Driving" data-sw-placeholder="K.m. Kilimo, Ujenzi, Udereva">
-            </div>
-            <div class="auth-form-group" id="jobTypeGroup">
-                <label data-en="Type of Jobs Needed" data-sw="Aina ya Kazi Unazohitaji">Aina ya Kazi Unazohitaji</label>
-                <input type="text" id="signupJobType" data-en-placeholder="e.g., Farm Work, Domestic Help" data-sw-placeholder="K.m. Kazi ya Shambani, Kazi ya Nyumbani">
-            </div>
-            <div class="auth-form-group">
-                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
-                <input type="password" id="signupPassword" required minlength="6">
-            </div>
-            <div class="auth-form-group">
-                <label data-en="Confirm Password *" data-sw="Thibitisha Nenosiri *">Thibitisha Nenosiri *</label>
-                <input type="password" id="signupConfirmPassword" required>
-            </div>
-            <button type="submit" class="auth-btn" id="signupBtn">
-                <span id="signupText" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="showTab('login')">
+                <span data-en="Sign In" data-sw="Ingia">Ingia</span>
             </button>
-            <div class="auth-switch">
-                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a onclick="showLoginForm()" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
-            </div>
-        </form>
-
-        <!-- Sign In Form -->
-        <form id="signinForm" class="auth-form hidden">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
-            <div class="auth-form-group">
-                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
-                <input type="tel" id="signinPhone" required oninput="formatPhoneNumber(this)">
-            </div>
-            <div class="auth-form-group">
-                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
-                <input type="password" id="signinPassword" required>
-            </div>
-            <button type="submit" class="auth-btn" id="signinBtn">
-                <span id="signinText" data-en="Sign In" data-sw="Ingia">Ingia</span>
+            <button class="auth-tab" onclick="showTab('signup')">
+                <span data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</span>
             </button>
-            <div class="auth-switch">
-                <p data-en="Don't have an account?" data-sw="Huna akaunti?">Huna akaunti? <a onclick="showRoleSelection()" data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</a></p>
-            </div>
-        </form>
-
-        <!-- Back Button -->
-        <div id="backButton" class="hidden" style="text-align: center; margin-top: 1rem;">
-            <a onclick="showRoleSelection()" style="color: #1e3a8a; text-decoration: none; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-arrow-left"></i> <span data-en="Back to Role Selection" data-sw="Rudi kwenye Uchaguzi wa Jukumu">Rudi kwenye Uchaguzi wa Jukumu</span>
-            </a>
         </div>
 
-        <!-- Message Display -->
-        <div id="messageContainer"></div>
+        <div class="auth-content">
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1e3a8a;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
+                
+                <div class="form-group">
+                    <label data-en="Phone Number" data-sw="Nambari ya Simu">Nambari ya Simu</label>
+                    <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
+                </div>
+                <div class="form-group">
+                    <label data-en="Password" data-sw="Nenosiri">Nenosiri</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn" id="loginBtn">
+                    <span id="loginText" data-en="Sign In" data-sw="Ingia">Ingia</span>
+                </button>
+                <div class="auth-footer">
+                    <p data-en="Don't have an account?" data-sw="Huna akaunti?">Huna akaunti? 
+                        <a href="#" onclick="showTab('signup')" data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</a>
+                    </p>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form">
+                <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1e3a8a;" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</h2>
+                
+                <div class="role-selection">
+                    <div class="role-option active" onclick="selectRole('employee')">
+                        <div class="role-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</div>
+                    </div>
+                    <div class="role-option" onclick="selectRole('employer')">
+                        <div class="role-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div data-en="Employer" data-sw="Mwajiri">Mwajiri</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="nameLabel" data-en="Full Name" data-sw="Jina Kamili">Jina Kamili</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label data-en="Phone Number" data-sw="Nambari ya Simu">Nambari ya Simu</label>
+                    <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)">
+                    <div class="phone-error" id="phoneError" data-en="This phone number is already registered" data-sw="Nambari hii ya simu tayari imesajiliwa">
+                        Nambari hii ya simu tayari imesajiliwa
+                    </div>
+                    <small style="color: #666; font-size: 0.75rem;" data-en="Format: 0712345678 or 254712345678" data-sw="Muundo: 0712345678 au 254712345678">Muundo: 0712345678 au 254712345678</small>
+                </div>
+                <div class="form-group">
+                    <label data-en="Location" data-sw="Eneo">Eneo</label>
+                    <input type="text" id="signupLocation" required>
+                </div>
+                <div class="form-group" id="specializationGroup">
+                    <label data-en="Area of Specialization" data-sw="Eneo la Utaalamu">Eneo la Utaalamu</label>
+                    <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction" data-sw-placeholder="K.m. Kilimo, Ujenzi">
+                </div>
+                <div class="form-group" id="businessGroup" style="display: none;">
+                    <label data-en="Business Type" data-sw="Aina ya Biashara">Aina ya Biashara</label>
+                    <input type="text" id="signupBusiness" data-en-placeholder="e.g., Farm, Construction Company" data-sw-placeholder="K.m. Shamba, Kampuni ya Ujenzi">
+                </div>
+                <div class="form-group">
+                    <label data-en="Password" data-sw="Nenosiri">Nenosiri</label>
+                    <input type="password" id="signupPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label data-en="Confirm Password" data-sw="Thibitisha Nenosiri">Thibitisha Nenosiri</label>
+                    <input type="password" id="signupConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn" id="signupBtn">
+                    <span id="signupText" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
+                </button>
+                <div class="auth-footer">
+                    <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? 
+                        <a href="#" onclick="showTab('login')" data-en="Sign In" data-sw="Ingia">Ingia</a>
+                    </p>
+                </div>
+            </form>
+
+            <div id="messageContainer"></div>
+        </div>
     </div>
 
     <script>
         // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
-        let selectedRole = null;
-        let currentLanguage = 'sw';
+        let selectedRole = 'employee';
+        let currentLanguage = 'sw'; // Default to Swahili
         let phoneExists = false;
 
-        // DOM Elements
-        const roleSelection = document.getElementById('roleSelection');
-        const signupForm = document.getElementById('signupForm');
-        const signinForm = document.getElementById('signinForm');
-        const backButton = document.getElementById('backButton');
-        const messageContainer = document.getElementById('messageContainer');
-        const phoneError = document.getElementById('phoneError');
-
-        // Initialize
+        // Initialize language on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved language preference
+            const savedLanguage = localStorage.getItem('preferredLanguage');
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+            }
+            
             // Check if user is already logged in
             const token = localStorage.getItem('token');
             if (token) {
                 window.location.href = 'index.html';
                 return;
             }
-
-            // Set initial language
-            const savedLanguage = localStorage.getItem('preferredLanguage');
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-            }
+            
             updateLanguageDisplay();
             translatePage();
-
+            
+            // Initialize role selection
+            selectRole('employee');
+            
+            // Setup form event listeners
             setupEventListeners();
         });
 
         function setupEventListeners() {
-            signupForm.addEventListener('submit', handleSignUp);
-            signinForm.addEventListener('submit', handleSignIn);
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('signupForm').addEventListener('submit', handleSignUp);
         }
 
         // Phone number validation
@@ -433,23 +404,22 @@
                     const data = await response.json();
                     if (data.exists) {
                         phoneExists = true;
-                        phoneError.style.display = 'block';
+                        document.getElementById('phoneError').style.display = 'block';
                         document.getElementById('signupBtn').disabled = true;
                     } else {
                         phoneExists = false;
-                        phoneError.style.display = 'none';
+                        document.getElementById('phoneError').style.display = 'none';
                         document.getElementById('signupBtn').disabled = false;
                     }
                 }
             } catch (error) {
                 console.error('Error checking phone:', error);
                 phoneExists = false;
-                phoneError.style.display = 'none';
+                document.getElementById('phoneError').style.display = 'none';
                 document.getElementById('signupBtn').disabled = false;
             }
         }
 
-        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
@@ -471,25 +441,46 @@
         }
 
         function translatePage() {
-            // Translate text content
-            const elements = document.querySelectorAll('[data-en][data-sw]');
+            // Translate all elements with data attributes
+            const elements = document.querySelectorAll('[data-en], [data-sw]');
             elements.forEach(element => {
-                if (currentLanguage === 'en') {
-                    element.textContent = element.getAttribute('data-en');
-                } else {
-                    element.textContent = element.getAttribute('data-sw');
+                if (element.hasAttribute('data-en') && element.hasAttribute('data-sw')) {
+                    if (currentLanguage === 'en') {
+                        element.textContent = element.getAttribute('data-en');
+                    } else {
+                        element.textContent = element.getAttribute('data-sw');
+                    }
                 }
             });
 
             // Translate placeholders
-            const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
+            const placeholderElements = document.querySelectorAll('[data-en-placeholder], [data-sw-placeholder]');
             placeholderElements.forEach(element => {
-                if (currentLanguage === 'en') {
-                    element.placeholder = element.getAttribute('data-en-placeholder');
-                } else {
-                    element.placeholder = element.getAttribute('data-sw-placeholder');
+                if (element.hasAttribute('data-en-placeholder') && element.hasAttribute('data-sw-placeholder')) {
+                    if (currentLanguage === 'en') {
+                        element.placeholder = element.getAttribute('data-en-placeholder');
+                    } else {
+                        element.placeholder = element.getAttribute('data-sw-placeholder');
+                    }
                 }
             });
+        }
+
+        function showTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.auth-tab')[tabName === 'login' ? 0 : 1].classList.add('active');
+
+            // Update forms
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Form').classList.add('active');
+
+            // Clear messages
+            document.getElementById('messageContainer').innerHTML = '';
         }
 
         function selectRole(role) {
@@ -498,71 +489,118 @@
                 option.classList.remove('active');
             });
             event.currentTarget.classList.add('active');
-            
-            // Update form based on role
+
+            // Update form fields based on role
             const nameLabel = document.getElementById('nameLabel');
             const specializationGroup = document.getElementById('specializationGroup');
-            const jobTypeGroup = document.getElementById('jobTypeGroup');
-            
+            const businessGroup = document.getElementById('businessGroup');
+
             if (role === 'employee') {
                 if (currentLanguage === 'en') {
-                    nameLabel.textContent = 'Full Name *';
+                    nameLabel.textContent = 'Full Name';
                 } else {
-                    nameLabel.textContent = 'Jina Kamili *';
+                    nameLabel.textContent = 'Jina Kamili';
                 }
                 specializationGroup.style.display = 'block';
-                jobTypeGroup.style.display = 'none';
+                businessGroup.style.display = 'none';
             } else {
                 if (currentLanguage === 'en') {
-                    nameLabel.textContent = 'Business/Organization Name *';
+                    nameLabel.textContent = 'Business/Organization Name';
                 } else {
-                    nameLabel.textContent = 'Jina la Biashara/Shirika *';
+                    nameLabel.textContent = 'Jina la Biashara/Shirika';
                 }
                 specializationGroup.style.display = 'none';
-                jobTypeGroup.style.display = 'block';
+                businessGroup.style.display = 'block';
             }
-            
-            showForm('signup');
         }
 
-        function showForm(formType) {
-            roleSelection.classList.add('hidden');
-            signupForm.classList.add('hidden');
-            signinForm.classList.add('hidden');
-            backButton.classList.remove('hidden');
+        async function handleLogin(e) {
+            e.preventDefault();
             
-            if (formType === 'signup') {
-                signupForm.classList.remove('hidden');
-                phoneExists = false;
-                phoneError.style.display = 'none';
-                document.getElementById('signupBtn').disabled = false;
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!phone || !password) {
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Please enter phone number and password'
+                        : 'Tafadhali weka nambari ya simu na nenosiri',
+                    'error'
+                );
+                return;
+            }
+            
+            const cleanPhone = formatPhoneToStandard(phone);
+            
+            // Show loading state
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            loginBtn.disabled = true;
+            if (currentLanguage === 'en') {
+                loginText.innerHTML = '<div class="loading"></div> Signing In...';
             } else {
-                signinForm.classList.remove('hidden');
+                loginText.innerHTML = '<div class="loading"></div> Inaingia...';
             }
             
-            clearMessages();
-        }
-
-        function showLoginForm() {
-            roleSelection.classList.add('hidden');
-            signupForm.classList.add('hidden');
-            signinForm.classList.remove('hidden');
-            backButton.classList.add('hidden');
-            clearMessages();
-        }
-
-        function showRoleSelection() {
-            roleSelection.classList.remove('hidden');
-            signupForm.classList.add('hidden');
-            signinForm.classList.add('hidden');
-            backButton.classList.add('hidden');
-            selectedRole = null;
-            
-            document.querySelectorAll('.role-option').forEach(option => {
-                option.classList.remove('active');
-            });
-            
-            clearMessages();
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone: cleanPhone,
+                        password: password
+                    })
+                });
+                
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    throw new Error('Server error');
+                }
+                
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showMessage(
+                        currentLanguage === 'en'
+                            ? 'Welcome back! Redirecting...'
+                            : 'Karibu tena! Unaongoza...',
+                        'success'
+                    );
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                    
+                } else {
+                    let errorMessage;
+                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                        errorMessage = currentLanguage === 'en' 
+                            ? 'Invalid phone number or password' 
+                            : 'Nambari ya simu au nenosiri si sahihi';
+                    } else {
+                        errorMessage = data.error || 'Sign in failed';
+                    }
+                    throw new Error(errorMessage);
+                }
+                
+            } catch (error) {
+                showMessage(error.message, 'error');
+            } finally {
+                loginBtn.disabled = false;
+                if (currentLanguage === 'en') {
+                    loginText.textContent = 'Sign In';
+                } else {
+                    loginText.textContent = 'Ingia';
+                }
+            }
         }
 
         async function handleSignUp(e) {
@@ -619,16 +657,6 @@
                 return;
             }
             
-            if (!selectedRole) {
-                showMessage(
-                    currentLanguage === 'en'
-                        ? 'Please select a role'
-                        : 'Tafadhali chagua jukumu',
-                    'error'
-                );
-                return;
-            }
-            
             const cleanPhone = formatPhoneToStandard(phone);
             
             // Prepare user data
@@ -644,7 +672,7 @@
             if (selectedRole === 'employee') {
                 userData.specialization = document.getElementById('signupSpecialization').value.trim();
             } else {
-                userData.jobType = document.getElementById('signupJobType').value.trim();
+                userData.jobType = document.getElementById('signupBusiness').value.trim();
             }
             
             // Show loading state
@@ -694,7 +722,7 @@
                 } else {
                     if (data.error && data.error.includes('already exists')) {
                         phoneExists = true;
-                        phoneError.style.display = 'block';
+                        document.getElementById('phoneError').style.display = 'block';
                         document.getElementById('signupBtn').disabled = true;
                         throw new Error(
                             currentLanguage === 'en'
@@ -714,95 +742,6 @@
                     signupText.textContent = 'Create Account';
                 } else {
                     signupText.textContent = 'Fungua Akaunti';
-                }
-            }
-        }
-
-        async function handleSignIn(e) {
-            e.preventDefault();
-            
-            const phone = document.getElementById('signinPhone').value.trim();
-            const password = document.getElementById('signinPassword').value;
-            
-            if (!phone || !password) {
-                showMessage(
-                    currentLanguage === 'en'
-                        ? 'Please enter phone number and password'
-                        : 'Tafadhali weka nambari ya simu na nenosiri',
-                    'error'
-                );
-                return;
-            }
-            
-            const cleanPhone = formatPhoneToStandard(phone);
-            
-            // Show loading state
-            const signinBtn = document.getElementById('signinBtn');
-            const signinText = document.getElementById('signinText');
-            signinBtn.disabled = true;
-            if (currentLanguage === 'en') {
-                signinText.innerHTML = '<div class="loading"></div> Signing In...';
-            } else {
-                signinText.innerHTML = '<div class="loading"></div> Inaingia...';
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        phone: cleanPhone,
-                        password: password
-                    })
-                });
-                
-                const contentType = response.headers.get('content-type');
-                let data;
-                
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
-                }
-                
-                if (response.ok && data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    showMessage(
-                        currentLanguage === 'en'
-                            ? 'Welcome back! Redirecting...'
-                            : 'Karibu tena! Unaongoza...',
-                        'success'
-                    );
-                    
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1500);
-                    
-                } else {
-                    let errorMessage;
-                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
-                        errorMessage = currentLanguage === 'en' 
-                            ? 'Invalid phone number or password' 
-                            : 'Nambari ya simu au nenosiri si sahihi';
-                    } else {
-                        errorMessage = data.error || 'Sign in failed';
-                    }
-                    throw new Error(errorMessage);
-                }
-                
-            } catch (error) {
-                showMessage(error.message, 'error');
-            } finally {
-                signinBtn.disabled = false;
-                if (currentLanguage === 'en') {
-                    signinText.textContent = 'Sign In';
-                } else {
-                    signinText.textContent = 'Ingia';
                 }
             }
         }
@@ -834,6 +773,7 @@
         }
 
         function showMessage(message, type) {
+            const messageContainer = document.getElementById('messageContainer');
             messageContainer.innerHTML = `
                 <div class="message ${type}">
                     ${message}
@@ -841,17 +781,11 @@
             `;
         }
 
-        function clearMessages() {
-            messageContainer.innerHTML = '';
-        }
-
-        // Global functions
+        // Make functions global for onclick events
+        window.showTab = showTab;
         window.selectRole = selectRole;
-        window.showForm = showForm;
-        window.showRoleSelection = showRoleSelection;
-        window.showLoginForm = showLoginForm;
-        window.formatPhoneNumber = formatPhoneNumber;
         window.toggleLanguage = toggleLanguage;
+        window.formatPhoneNumber = formatPhoneNumber;
         window.checkPhoneExists = checkPhoneExists;
     </script>
 </body>
