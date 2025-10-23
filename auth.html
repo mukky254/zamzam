@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Mashinani - Sign In</title>
+    <title>Kazi Mashinani - Ingia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -61,6 +61,38 @@
             font-size: 1rem;
         }
 
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .language-switcher:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .language-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
         .auth-tabs {
             display: flex;
             margin-bottom: 2rem;
@@ -113,6 +145,13 @@
             outline: none;
             border-color: #60a5fa;
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .phone-error {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
         }
 
         .auth-btn {
@@ -242,102 +281,112 @@
     </style>
 </head>
 <body>
+    <div class="language-switcher" onclick="toggleLanguage()">
+        <div class="language-flag">
+            <span id="currentFlag">🇰🇪</span>
+        </div>
+        <div class="language-name" id="currentLanguage">Kiswahili</div>
+    </div>
+
     <div class="auth-container">
         <div class="auth-logo">
             <i class="fas fa-hands-helping"></i>
             <div>
-                <h1>Kazi Mashinani</h1>
-                <p>Connecting Rural Workers with Local Opportunities</p>
+                <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
+                <p data-en="Connecting Rural Workers with Local Opportunities" data-sw="Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi">Kuunganisha Wafanyikazi Vijijini na Fursa za Kazi</p>
             </div>
         </div>
 
         <!-- Role Selection -->
         <div id="roleSelection">
-            <h2 style="margin-bottom: 1.5rem; color: #1f2937;">Join as</h2>
+            <h2 style="margin-bottom: 1.5rem; color: #1f2937;" data-en="Join as" data-sw="Jiunge kama">Jiunge kama</h2>
             <div class="role-selection">
                 <div class="role-option" onclick="selectRole('employee')">
                     <div class="role-icon">
                         <i class="fas fa-user-tie"></i>
                     </div>
-                    <h4>Job Seeker</h4>
-                    <p>Find work opportunities</p>
+                    <h4 data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</h4>
+                    <p data-en="Find work opportunities" data-sw="Tafuta fursa za kazi">Tafuta fursa za kazi</p>
                 </div>
                 <div class="role-option" onclick="selectRole('employer')">
                     <div class="role-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
-                    <h4>Employer</h4>
-                    <p>Hire workers</p>
+                    <h4 data-en="Employer" data-sw="Mwajiri">Mwajiri</h4>
+                    <p data-en="Hire workers" data-sw="Ajiri wafanyikazi">Ajiri wafanyikazi</p>
                 </div>
             </div>
             <div class="auth-switch">
-                <p>Already have an account? <a onclick="showForm('signin')">Sign In</a></p>
+                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a onclick="showForm('signin')" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
             </div>
         </div>
 
         <!-- Sign Up Form -->
         <form id="signupForm" class="auth-form hidden">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;">Create Account</h2>
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</h2>
             <div class="auth-form-group">
-                <label id="nameLabel">Full Name *</label>
+                <label id="nameLabel" data-en="Full Name *" data-sw="Jina Kamili *">Jina Kamili *</label>
                 <input type="text" id="signupName" required>
             </div>
             <div class="auth-form-group">
-                <label>Mobile Number *</label>
-                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)">
-                <small style="color: #666; font-size: 0.75rem;">Format: 0712345678 or 254712345678</small>
+                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
+                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)">
+                <div class="phone-error" id="phoneError" data-en="This phone number is already registered" data-sw="Nambari hii ya simu tayari imesajiliwa">
+                    Nambari hii ya simu tayari imesajiliwa
+                </div>
+                <small style="color: #666; font-size: 0.75rem;" data-en="Format: 0712345678 or 254712345678" data-sw="Muundo: 0712345678 au 254712345678">Muundo: 0712345678 au 254712345678</small>
             </div>
             <div class="auth-form-group">
-                <label>Location *</label>
+                <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
                 <input type="text" id="signupLocation" required>
             </div>
             <div class="auth-form-group" id="specializationGroup">
-                <label>Area of Specialization</label>
-                <input type="text" id="signupSpecialization" placeholder="e.g., Farming, Construction, Driving">
+                <label data-en="Area of Specialization" data-sw="Eneo la Utaalamu">Eneo la Utaalamu</label>
+                <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction, Driving" data-sw-placeholder="K.m. Kilimo, Ujenzi, Udereva">
             </div>
             <div class="auth-form-group" id="jobTypeGroup">
-                <label>Type of Jobs Needed</label>
-                <input type="text" id="signupJobType" placeholder="e.g., Farm Work, Domestic Help">
+                <label data-en="Type of Jobs Needed" data-sw="Aina ya Kazi Unazohitaji">Aina ya Kazi Unazohitaji</label>
+                <input type="text" id="signupJobType" data-en-placeholder="e.g., Farm Work, Domestic Help" data-sw-placeholder="K.m. Kazi ya Shambani, Kazi ya Nyumbani">
             </div>
             <div class="auth-form-group">
-                <label>Password *</label>
+                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
                 <input type="password" id="signupPassword" required minlength="6">
             </div>
             <div class="auth-form-group">
-                <label>Confirm Password *</label>
+                <label data-en="Confirm Password *" data-sw="Thibitisha Nenosiri *">Thibitisha Nenosiri *</label>
                 <input type="password" id="signupConfirmPassword" required>
             </div>
             <button type="submit" class="auth-btn" id="signupBtn">
-                <span id="signupText">Create Account</span>
+                <span id="signupText" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
             </button>
             <div class="auth-switch">
-                <p>Already have an account? <a onclick="showForm('signin')">Sign In</a></p>
+                <p data-en="Already have an account?" data-sw="Tayari una akaunti?">Tayari una akaunti? <a onclick="showForm('signin')" data-en="Sign In" data-sw="Ingia">Ingia</a></p>
             </div>
         </form>
 
         <!-- Sign In Form -->
         <form id="signinForm" class="auth-form hidden">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;">Welcome Back</h2>
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
             <div class="auth-form-group">
-                <label>Mobile Number *</label>
+                <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
                 <input type="tel" id="signinPhone" required oninput="formatPhoneNumber(this)">
             </div>
             <div class="auth-form-group">
-                <label>Password *</label>
+                <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
                 <input type="password" id="signinPassword" required>
             </div>
             <button type="submit" class="auth-btn" id="signinBtn">
-                <span id="signinText">Sign In</span>
+                <span id="signinText" data-en="Sign In" data-sw="Ingia">Ingia</span>
             </button>
             <div class="auth-switch">
-                <p>Don't have an account? <a onclick="showRoleSelection()">Sign Up</a></p>
+                <p data-en="Don't have an account?" data-sw="Huna akaunti?">Huna akaunti? <a onclick="showRoleSelection()" data-en="Sign Up" data-sw="Jiandikishe">Jiandikishe</a></p>
             </div>
         </form>
 
         <!-- Back Button -->
         <div id="backButton" class="hidden" style="text-align: center; margin-top: 1rem;">
             <a onclick="showRoleSelection()" style="color: #1e3a8a; text-decoration: none; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-arrow-left"></i> Back to Role Selection
+                <i class="fas fa-arrow-left"></i> <span data-en="Back to Role Selection" data-sw="Rudi kwenye Uchaguzi wa Jukumu">Rudi kwenye Uchaguzi wa Jukumu</span>
             </a>
         </div>
 
@@ -349,6 +398,8 @@
         // Configuration - Your Render backend URL
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
+        let currentLanguage = 'sw'; // Default to Kiswahili
+        let phoneExists = false;
 
         // DOM Elements
         const roleSelection = document.getElementById('roleSelection');
@@ -356,6 +407,7 @@
         const signinForm = document.getElementById('signinForm');
         const backButton = document.getElementById('backButton');
         const messageContainer = document.getElementById('messageContainer');
+        const phoneError = document.getElementById('phoneError');
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -364,6 +416,14 @@
             if (token) {
                 window.location.href = 'index.html';
             }
+
+            // Set initial language
+            const savedLanguage = localStorage.getItem('preferredLanguage');
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+            }
+            updateLanguageDisplay();
+            translatePage();
 
             setupEventListeners();
         });
@@ -376,6 +436,84 @@
             signinForm.addEventListener('submit', handleSignIn);
         }
 
+        // Phone number validation
+        async function checkPhoneExists(phone) {
+            if (!phone || phone.length < 10) return;
+
+            const cleanPhone = formatPhoneToStandard(phone);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/check-phone`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone: cleanPhone })
+                });
+                
+                const data = await response.json();
+                
+                if (data.exists) {
+                    phoneExists = true;
+                    phoneError.style.display = 'block';
+                    document.getElementById('signupBtn').disabled = true;
+                } else {
+                    phoneExists = false;
+                    phoneError.style.display = 'none';
+                    document.getElementById('signupBtn').disabled = false;
+                }
+            } catch (error) {
+                console.error('Error checking phone:', error);
+                // If there's an error, we don't block registration
+                phoneExists = false;
+                phoneError.style.display = 'none';
+                document.getElementById('signupBtn').disabled = false;
+            }
+        }
+
+        // Language Translation Functions
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
+            localStorage.setItem('preferredLanguage', currentLanguage);
+            updateLanguageDisplay();
+            translatePage();
+        }
+
+        function updateLanguageDisplay() {
+            const flagElement = document.getElementById('currentFlag');
+            const languageElement = document.getElementById('currentLanguage');
+            
+            if (currentLanguage === 'en') {
+                flagElement.textContent = '🇺🇸';
+                languageElement.textContent = 'English';
+            } else {
+                flagElement.textContent = '🇰🇪';
+                languageElement.textContent = 'Kiswahili';
+            }
+        }
+
+        function translatePage() {
+            // Translate text content
+            const elements = document.querySelectorAll('[data-en][data-sw]');
+            elements.forEach(element => {
+                if (currentLanguage === 'en') {
+                    element.textContent = element.getAttribute('data-en');
+                } else {
+                    element.textContent = element.getAttribute('data-sw');
+                }
+            });
+
+            // Translate placeholders
+            const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
+            placeholderElements.forEach(element => {
+                if (currentLanguage === 'en') {
+                    element.placeholder = element.getAttribute('data-en-placeholder');
+                } else {
+                    element.placeholder = element.getAttribute('data-sw-placeholder');
+                }
+            });
+        }
+
         function selectRole(role) {
             selectedRole = role;
             document.querySelectorAll('.role-option').forEach(option => {
@@ -384,14 +522,26 @@
             event.currentTarget.classList.add('active');
             
             // Update form based on role
+            const nameLabel = document.getElementById('nameLabel');
+            const specializationGroup = document.getElementById('specializationGroup');
+            const jobTypeGroup = document.getElementById('jobTypeGroup');
+            
             if (role === 'employee') {
-                document.getElementById('nameLabel').textContent = 'Full Name *';
-                document.getElementById('specializationGroup').style.display = 'block';
-                document.getElementById('jobTypeGroup').style.display = 'none';
+                if (currentLanguage === 'en') {
+                    nameLabel.textContent = 'Full Name *';
+                } else {
+                    nameLabel.textContent = 'Jina Kamili *';
+                }
+                specializationGroup.style.display = 'block';
+                jobTypeGroup.style.display = 'none';
             } else {
-                document.getElementById('nameLabel').textContent = 'Business/Organization Name *';
-                document.getElementById('specializationGroup').style.display = 'none';
-                document.getElementById('jobTypeGroup').style.display = 'block';
+                if (currentLanguage === 'en') {
+                    nameLabel.textContent = 'Business/Organization Name *';
+                } else {
+                    nameLabel.textContent = 'Jina la Biashara/Shirika *';
+                }
+                specializationGroup.style.display = 'none';
+                jobTypeGroup.style.display = 'block';
             }
             
             showForm('signup');
@@ -405,6 +555,10 @@
             
             if (formType === 'signup') {
                 signupForm.classList.remove('hidden');
+                // Reset phone validation when showing signup form
+                phoneExists = false;
+                phoneError.style.display = 'none';
+                document.getElementById('signupBtn').disabled = false;
             } else {
                 signinForm.classList.remove('hidden');
             }
@@ -429,25 +583,55 @@
         async function handleSignUp(e) {
             e.preventDefault();
             
-            const name = document.getElementById('signupName').value.trim();
+            // Check if phone already exists before submitting
             const phone = document.getElementById('signupPhone').value.trim();
+            if (phone) {
+                await checkPhoneExists(phone);
+            }
+            
+            if (phoneExists) {
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'This phone number is already registered. Please use a different number or sign in.' 
+                        : 'Nambari hii ya simu tayari imesajiliwa. Tafadhali tumia nambari tofauti au ingia.',
+                    'error'
+                );
+                return;
+            }
+            
+            const name = document.getElementById('signupName').value.trim();
             const location = document.getElementById('signupLocation').value.trim();
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             
             // Validation
             if (!name || !phone || !location || !password) {
-                showMessage('Please fill in all required fields', 'error');
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Please fill in all required fields' 
+                        : 'Tafadhali jaza sehemu zote zinazohitajika',
+                    'error'
+                );
                 return;
             }
             
             if (password !== confirmPassword) {
-                showMessage('Passwords do not match', 'error');
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Passwords do not match'
+                        : 'Nenosiri halifanani',
+                    'error'
+                );
                 return;
             }
             
             if (!selectedRole) {
-                showMessage('Please select a role', 'error');
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Please select a role'
+                        : 'Tafadhali chagua jukumu',
+                    'error'
+                );
                 return;
             }
             
@@ -473,7 +657,11 @@
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
             signupBtn.disabled = true;
-            signupText.innerHTML = '<div class="loading"></div> Creating Account...';
+            if (currentLanguage === 'en') {
+                signupText.innerHTML = '<div class="loading"></div> Creating Account...';
+            } else {
+                signupText.innerHTML = '<div class="loading"></div> Inafungua Akaunti...';
+            }
             
             try {
                 console.log('Sending signup request to:', `${API_BASE_URL}/auth/signup`);
@@ -495,7 +683,12 @@
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showMessage('Account created successfully! Redirecting...', 'success');
+                    showMessage(
+                        currentLanguage === 'en'
+                            ? 'Account created successfully! Redirecting...'
+                            : 'Akaunti imefunguliwa kikamilifu! Unaongoza...',
+                        'success'
+                    );
                     
                     // Redirect to main page after successful signup
                     setTimeout(() => {
@@ -503,16 +696,32 @@
                     }, 2000);
                     
                 } else {
-                    throw new Error(data.error || 'Sign up failed');
+                    // Handle duplicate phone error from backend
+                    if (data.error && data.error.includes('already exists')) {
+                        phoneExists = true;
+                        phoneError.style.display = 'block';
+                        document.getElementById('signupBtn').disabled = true;
+                        throw new Error(
+                            currentLanguage === 'en'
+                                ? 'This phone number is already registered'
+                                : 'Nambari hii ya simu tayari imesajiliwa'
+                        );
+                    } else {
+                        throw new Error(data.error || 'Sign up failed');
+                    }
                 }
                 
             } catch (error) {
                 console.error('Sign up error:', error);
-                showMessage(error.message || 'Network error. Please try again.', 'error');
+                showMessage(error.message, 'error');
             } finally {
                 // Reset button state
                 signupBtn.disabled = false;
-                signupText.textContent = 'Create Account';
+                if (currentLanguage === 'en') {
+                    signupText.textContent = 'Create Account';
+                } else {
+                    signupText.textContent = 'Fungua Akaunti';
+                }
             }
         }
 
@@ -523,7 +732,12 @@
             const password = document.getElementById('signinPassword').value;
             
             if (!phone || !password) {
-                showMessage('Please enter phone number and password', 'error');
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Please enter phone number and password'
+                        : 'Tafadhali weka nambari ya simu na nenosiri',
+                    'error'
+                );
                 return;
             }
             
@@ -533,7 +747,11 @@
             const signinBtn = document.getElementById('signinBtn');
             const signinText = document.getElementById('signinText');
             signinBtn.disabled = true;
-            signinText.innerHTML = '<div class="loading"></div> Signing In...';
+            if (currentLanguage === 'en') {
+                signinText.innerHTML = '<div class="loading"></div> Signing In...';
+            } else {
+                signinText.innerHTML = '<div class="loading"></div> Inaingia...';
+            }
             
             try {
                 console.log('Sending signin request to:', `${API_BASE_URL}/auth/signin`);
@@ -557,7 +775,12 @@
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showMessage('Welcome back! Redirecting...', 'success');
+                    showMessage(
+                        currentLanguage === 'en'
+                            ? 'Welcome back! Redirecting...'
+                            : 'Karibu tena! Unaongoza...',
+                        'success'
+                    );
                     
                     // Redirect to main page after successful signin
                     setTimeout(() => {
@@ -570,11 +793,20 @@
                 
             } catch (error) {
                 console.error('Sign in error:', error);
-                showMessage(error.message || 'Network error. Please try again.', 'error');
+                showMessage(
+                    currentLanguage === 'en'
+                        ? 'Network error. Please try again.'
+                        : 'Hitilafu ya mtandao. Tafadhali jaribu tena.',
+                    'error'
+                );
             } finally {
                 // Reset button state
                 signinBtn.disabled = false;
-                signinText.textContent = 'Sign In';
+                if (currentLanguage === 'en') {
+                    signinText.textContent = 'Sign In';
+                } else {
+                    signinText.textContent = 'Ingia';
+                }
             }
         }
 
@@ -624,6 +856,8 @@
         window.showForm = showForm;
         window.showRoleSelection = showRoleSelection;
         window.formatPhoneNumber = formatPhoneNumber;
+        window.toggleLanguage = toggleLanguage;
+        window.checkPhoneExists = checkPhoneExists;
     </script>
 </body>
 </html>
