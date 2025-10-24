@@ -310,6 +310,17 @@
         <!-- Login Form -->
         <form id="loginForm" class="auth-form">
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
+            
+            <!-- Role selection for login -->
+            <div class="auth-form-group">
+                <label data-en="Select Role *" data-sw="Chagua Jukumu *">Chagua Jukumu *</label>
+                <select id="loginRole" required>
+                    <option value="" disabled selected data-en="Select your role" data-sw="Chagua jukumu lako">Chagua jukumu lako</option>
+                    <option value="employee" data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</option>
+                    <option value="employer" data-en="Employer" data-sw="Mwajiri">Mwajiri</option>
+                </select>
+            </div>
+            
             <div class="auth-form-group">
                 <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
                 <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
@@ -417,7 +428,7 @@
             // Check if user is already logged in
             const token = localStorage.getItem('token');
             if (token) {
-                window.location.href = 'index.html';
+                redirectToDashboard();
                 return;
             }
 
@@ -578,12 +589,13 @@
             
             const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
             
-            if (!phone || !password) {
+            if (!phone || !password || !role) {
                 showMessage(
                     currentLanguage === 'en'
-                        ? 'Please enter phone number and password'
-                        : 'Tafadhali weka nambari ya simu na nenosiri',
+                        ? 'Please enter phone number, password and select role'
+                        : 'Tafadhali weka nambari ya simu, nenosiri na uchague jukumu',
                     'error'
                 );
                 return;
@@ -626,6 +638,7 @@
                 if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', role); // Store selected role
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -634,9 +647,8 @@
                         'success'
                     );
                     
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1500);
+                    // Immediate redirect - no delay
+                    redirectToDashboard(role);
                     
                 } else {
                     let errorMessage;
@@ -776,6 +788,7 @@
                 if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', selectedRole); // Store selected role
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -784,9 +797,8 @@
                         'success'
                     );
                     
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
+                    // Immediate redirect - no delay
+                    redirectToDashboard(selectedRole);
                     
                 } else {
                     if (data.error && data.error.includes('already exists')) {
@@ -851,6 +863,25 @@
 
         function clearMessages() {
             messageContainer.innerHTML = '';
+        }
+
+        // Redirect to appropriate dashboard based on role
+        function redirectToDashboard(role = null) {
+            // If no role provided, try to get from localStorage
+            if (!role) {
+                role = localStorage.getItem('userRole');
+            }
+            
+            // Determine the appropriate page based on role
+            let redirectPage;
+            if (role === 'employer') {
+                redirectPage = 'employer-dashboard.html'; // Change to your employer page
+            } else {
+                redirectPage = 'employee-dashboard.html'; // Change to your employee page
+            }
+            
+            // Immediate redirect
+            window.location.href = redirectPage;
         }
 
         // Global functions
