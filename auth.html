@@ -568,7 +568,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(loginData)
+                    body: JSON.stringify(loginData),
+                    credentials: 'include' // Important for cookies/sessions
                 });
                 
                 // Check if response is OK
@@ -590,9 +591,8 @@
                 console.log('Login response:', data);
                 
                 if (data.success) {
-                    // Save token and user data
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    // Authentication successful - backend should handle session in MongoDB
+                    // No need to store anything in localStorage
                     
                     showMessage(messageDiv, 
                         currentLanguage === 'en' 
@@ -699,7 +699,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(registerData)
+                    body: JSON.stringify(registerData),
+                    credentials: 'include' // Important for cookies/sessions
                 });
                 
                 // Check if response is OK
@@ -721,9 +722,8 @@
                 console.log('Registration response:', data);
                 
                 if (data.success) {
-                    // Save token and user data
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    // Registration successful - backend should handle session in MongoDB
+                    // No need to store anything in localStorage
                     
                     showMessage(messageDiv, 
                         currentLanguage === 'en' 
@@ -769,21 +769,24 @@
             }
         }
         
-        // Check if user is already logged in
-        function checkExistingAuth() {
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            
-            if (token && user) {
-                try {
-                    // User is already logged in, redirect to main app
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error('Redirect error:', error);
-                    // If redirect fails, clear storage and stay on login page
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
+        // Check if user is already logged in (via session)
+        async function checkExistingAuth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/check`, {
+                    method: 'GET',
+                    credentials: 'include' // Important for cookies/sessions
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.user) {
+                        // User is already logged in, redirect to main app
+                        window.location.href = 'index.html';
+                    }
                 }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                // If check fails, stay on login page
             }
         }
         
