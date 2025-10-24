@@ -880,16 +880,8 @@
         }
 
         function redirectToDashboard() {
-            const userRole = localStorage.getItem('userRole');
-            
-            if (userRole === 'employer') {
-                window.location.href = 'employer-dashboard.html';
-            } else if (userRole === 'employee') {
-                window.location.href = 'employee-dashboard.html';
-            } else {
-                // Fallback to main dashboard
-                window.location.href = 'index.html';
-            }
+            // Always redirect to index.html - the role-based UI will be handled there
+            window.location.href = 'index.html';
         }
 
         function formatPhoneNumber(input) {
