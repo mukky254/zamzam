@@ -716,7 +716,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div>
-                        <div id="userName">Aquarech Limited</div>
+                        <div id="userName">Loading...</div>
                         <button class="btn-logout" onclick="logout()">
                             <i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-sw="Toka">Toka</span>
                         </button>
@@ -931,7 +931,7 @@
         let currentUser = null;
         let currentJobs = [];
         let currentEmployees = [];
-        let currentLanguage = 'en';
+        let currentLanguage = 'sw';
         let userJobs = [];
         let currentEditingJobId = null;
 
@@ -952,7 +952,7 @@
             try {
                 currentUser = JSON.parse(userData);
                 
-                // Set language from localStorage or default to English
+                // Set language from localStorage or default to Swahili
                 const savedLanguage = localStorage.getItem('preferredLanguage');
                 if (savedLanguage) {
                     currentLanguage = savedLanguage;
@@ -968,33 +968,21 @@
         }
 
         function initializeApp() {
-    // Update UI with user info
-    document.getElementById('userName').textContent = currentUser.name;
-    document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
-        ? `Welcome ${currentUser.name}!` 
-        : `Karibu ${currentUser.name}!`;
-    
-    // Show/hide features based on role
-    if (currentUser.role === 'employer') {
-        document.getElementById('postJobNav').style.display = 'flex';
-        document.getElementById('employeesNav').style.display = 'flex';
-        // For employers, show the post job section by default
-        showSection('post');
-    } else {
-        // For employees, show the jobs section by default
-        showSection('jobs');
-    }
-    
-    // Load initial data
-    loadBlogs();
-    loadJobs();
-    loadEmployees();
-    
-    // Setup event listeners
-    document.getElementById('jobForm').addEventListener('submit', handleJobPost);
-}
+            // Update UI with user info
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
+                ? `Welcome ${currentUser.name}!` 
+                : `Karibu ${currentUser.name}!`;
             
-           
+            // Show/hide features based on role
+            if (currentUser.role === 'employer') {
+                document.getElementById('postJobNav').style.display = 'flex';
+                document.getElementById('employeesNav').style.display = 'flex';
+            } else {
+                document.getElementById('postJobNav').style.display = 'none';
+                document.getElementById('employeesNav').style.display = 'none';
+            }
+            
             // Load initial data
             loadBlogs();
             loadJobs();
