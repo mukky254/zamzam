@@ -461,11 +461,28 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in
+            // Check if user is already logged in - only redirect if we have valid credentials
             const token = localStorage.getItem('token');
-            if (token) {
-                redirectToDashboard();
-                return;
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                // Only redirect if we have both token and user data
+                try {
+                    const userData = JSON.parse(user);
+                    if (userData._id) {
+                        console.log('User already logged in, redirecting to dashboard');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 100);
+                        return;
+                    }
+                } catch (e) {
+                    console.log('Invalid user data in storage');
+                    // Clear invalid data
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('userRole');
+                }
             }
 
             // Set initial language
@@ -694,7 +711,7 @@
                     );
                     
                     setTimeout(() => {
-                        redirectToDashboard();
+                        window.location.href = 'index.html';
                     }, 1500);
                     
                 } else {
@@ -849,7 +866,7 @@
                     );
                     
                     setTimeout(() => {
-                        redirectToDashboard();
+                        window.location.href = 'index.html';
                     }, 2000);
                     
                 } else {
@@ -877,11 +894,6 @@
                     signupText.textContent = 'Fungua Akaunti';
                 }
             }
-        }
-
-        function redirectToDashboard() {
-            // Always redirect to index.html - the role-based UI will be handled there
-            window.location.href = 'index.html';
         }
 
         function formatPhoneNumber(input) {
