@@ -312,11 +312,11 @@
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
             <div class="auth-form-group">
                 <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
-                <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
+                <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)" placeholder="0712345678">
             </div>
             <div class="auth-form-group">
                 <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
-                <input type="password" id="loginPassword" required>
+                <input type="password" id="loginPassword" required placeholder="••••••">
             </div>
             <button type="submit" class="auth-btn" id="loginBtn">
                 <span id="loginText" data-en="Sign In" data-sw="Ingia">Ingia</span>
@@ -356,11 +356,11 @@
             
             <div class="auth-form-group">
                 <label id="nameLabel" data-en="Full Name *" data-sw="Jina Kamili *">Jina Kamili *</label>
-                <input type="text" id="signupName" required>
+                <input type="text" id="signupName" required placeholder="John Doe">
             </div>
             <div class="auth-form-group">
                 <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
-                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)">
+                <input type="tel" id="signupPhone" required oninput="formatPhoneNumber(this)" onblur="checkPhoneExists(this.value)" placeholder="0712345678">
                 <div class="phone-error" id="phoneError" data-en="This phone number is already registered" data-sw="Nambari hii ya simu tayari imesajiliwa">
                     Nambari hii ya simu tayari imesajiliwa
                 </div>
@@ -368,23 +368,23 @@
             </div>
             <div class="auth-form-group">
                 <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
-                <input type="text" id="signupLocation" required>
+                <input type="text" id="signupLocation" required placeholder="Nairobi">
             </div>
             <div class="auth-form-group" id="specializationGroup">
                 <label data-en="Area of Specialization" data-sw="Eneo la Utaalamu">Eneo la Utaalamu</label>
-                <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction, Driving" data-sw-placeholder="K.m. Kilimo, Ujenzi, Udereva">
+                <input type="text" id="signupSpecialization" data-en-placeholder="e.g., Farming, Construction, Driving" data-sw-placeholder="K.m. Kilimo, Ujenzi, Udereva" placeholder="Farming, Construction">
             </div>
             <div class="auth-form-group" id="jobTypeGroup">
                 <label data-en="Type of Jobs Needed" data-sw="Aina ya Kazi Unazohitaji">Aina ya Kazi Unazohitaji</label>
-                <input type="text" id="signupJobType" data-en-placeholder="e.g., Farm Work, Domestic Help" data-sw-placeholder="K.m. Kazi ya Shambani, Kazi ya Nyumbani">
+                <input type="text" id="signupJobType" data-en-placeholder="e.g., Farm Work, Domestic Help" data-sw-placeholder="K.m. Kazi ya Shambani, Kazi ya Nyumbani" placeholder="Farm Work">
             </div>
             <div class="auth-form-group">
                 <label data-en="Password *" data-sw="Nenosiri *">Nenosiri *</label>
-                <input type="password" id="signupPassword" required minlength="6">
+                <input type="password" id="signupPassword" required minlength="6" placeholder="••••••">
             </div>
             <div class="auth-form-group">
                 <label data-en="Confirm Password *" data-sw="Thibitisha Nenosiri *">Thibitisha Nenosiri *</label>
-                <input type="password" id="signupConfirmPassword" required>
+                <input type="password" id="signupConfirmPassword" required placeholder="••••••">
             </div>
             <button type="submit" class="auth-btn" id="signupBtn">
                 <span id="signupText" data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
@@ -416,7 +416,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is already logged in
             const token = localStorage.getItem('token');
-            if (token) {
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                // User is already logged in, redirect to main page
                 window.location.href = 'index.html';
                 return;
             }
@@ -613,17 +616,10 @@
                     })
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
-                
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
-                }
+                const data = await response.json();
                 
                 if (response.ok && data.success) {
+                    // Store authentication data
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
@@ -634,23 +630,25 @@
                         'success'
                     );
                     
+                    // Redirect to main page after successful login
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
                     
                 } else {
                     let errorMessage;
-                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                    if (data.error && (data.error.includes('not found') || data.error.includes('invalid'))) {
                         errorMessage = currentLanguage === 'en' 
                             ? 'Invalid phone number or password' 
                             : 'Nambari ya simu au nenosiri si sahihi';
                     } else {
-                        errorMessage = data.error || 'Sign in failed';
+                        errorMessage = data.error || (currentLanguage === 'en' ? 'Sign in failed' : 'Imeshindwa kuingia');
                     }
                     throw new Error(errorMessage);
                 }
                 
             } catch (error) {
+                console.error('Login error:', error);
                 showMessage(error.message, 'error');
             } finally {
                 loginBtn.disabled = false;
@@ -665,22 +663,8 @@
         async function handleSignUp(e) {
             e.preventDefault();
             
-            const phone = document.getElementById('signupPhone').value.trim();
-            if (phone) {
-                await checkPhoneExists(phone);
-            }
-            
-            if (phoneExists) {
-                showMessage(
-                    currentLanguage === 'en' 
-                        ? 'This phone number is already registered. Please use a different number or sign in.' 
-                        : 'Nambari hii ya simu tayari imesajiliwa. Tafadhali tumia nambari tofauti au ingia.',
-                    'error'
-                );
-                return;
-            }
-            
             const name = document.getElementById('signupName').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
             const location = document.getElementById('signupLocation').value.trim();
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
@@ -763,17 +747,10 @@
                     body: JSON.stringify(userData)
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
-                
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
-                }
+                const data = await response.json();
                 
                 if (response.ok && data.success) {
+                    // Store authentication data
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
@@ -784,6 +761,7 @@
                         'success'
                     );
                     
+                    // Redirect to main page after successful signup
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 2000);
@@ -799,11 +777,12 @@
                                 : 'Nambari hii ya simu tayari imesajiliwa'
                         );
                     } else {
-                        throw new Error(data.error || 'Sign up failed');
+                        throw new Error(data.error || (currentLanguage === 'en' ? 'Sign up failed' : 'Imeshindwa kujiandikisha'));
                     }
                 }
                 
             } catch (error) {
+                console.error('Signup error:', error);
                 showMessage(error.message, 'error');
             } finally {
                 signupBtn.disabled = false;
