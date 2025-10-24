@@ -82,6 +82,29 @@
             font-size: 1.1rem;
         }
 
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
         .auth-tabs {
             display: flex;
             background: var(--light-bg);
@@ -255,27 +278,45 @@
         <div class="auth-header">
             <div class="logo">
                 <i class="fas fa-hands-helping"></i>
-                <h1>Kazi Mashinani</h1>
+                <h1 data-en="Kazi Mashinani" data-sw="Kazi Mashinani">Kazi Mashinani</h1>
             </div>
-            <p>Connecting rural workers with employment opportunities</p>
+            <p data-en="Connecting rural workers with employment opportunities" data-sw="Kuunganisha wafanyikazi vijijini na fursa za ajira">Kuunganisha wafanyikazi vijijini na fursa za ajira</p>
+            
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+                <button class="lang-btn" onclick="setLanguage('sw')">Kiswahili</button>
+            </div>
         </div>
         
         <div class="auth-tabs">
-            <div class="auth-tab active" onclick="showAuthForm('login')">Login</div>
-            <div class="auth-tab" onclick="showAuthForm('register')">Register</div>
+            <div class="auth-tab active" onclick="showAuthForm('login')">
+                <span data-en="Login" data-sw="Ingia">Ingia</span>
+            </div>
+            <div class="auth-tab" onclick="showAuthForm('register')">
+                <span data-en="Register" data-sw="Jiandikishe">Jiandikishe</span>
+            </div>
         </div>
         
         <div class="auth-content">
             <!-- Login Form -->
             <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label for="loginPhone">Phone Number</label>
-                    <input type="tel" id="loginPhone" required placeholder="0712345678">
+                    <label for="loginPhone" data-en="Phone Number" data-sw="Nambari ya Simu">Nambari ya Simu</label>
+                    <input type="tel" id="loginPhone" required data-en-placeholder="0712345678" data-sw-placeholder="0712345678">
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginRole" data-en="Login as" data-sw="Ingia kama">Ingia kama</label>
+                    <select id="loginRole" required>
+                        <option value="" data-en="Select your role" data-sw="Chagua jukumu lako">Chagua jukumu lako</option>
+                        <option value="employer" data-en="Employer" data-sw="Mwajiri">Mwajiri</option>
+                        <option value="employee" data-en="Employee" data-sw="Mfanyakazi">Mfanyakazi</option>
+                    </select>
                 </div>
                 
                 <div class="form-group password-toggle">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    <label for="loginPassword" data-en="Password" data-sw="Nenosiri">Nenosiri</label>
+                    <input type="password" id="loginPassword" required data-en-placeholder="Enter your password" data-sw-placeholder="Weka nenosiri lako">
                     <span class="toggle-icon" onclick="togglePassword('loginPassword')">
                         <i class="fas fa-eye"></i>
                     </span>
@@ -284,55 +325,55 @@
                 <div id="loginMessage"></div>
                 
                 <button type="submit" class="btn-primary" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                    <i class="fas fa-sign-in-alt"></i> <span data-en="Login" data-sw="Ingia">Ingia</span>
                 </button>
             </form>
             
             <!-- Register Form -->
             <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label for="registerName">Full Name</label>
-                    <input type="text" id="registerName" required placeholder="Enter your full name">
+                    <label for="registerName" data-en="Full Name" data-sw="Jina Kamili">Jina Kamili</label>
+                    <input type="text" id="registerName" required data-en-placeholder="Enter your full name" data-sw-placeholder="Weka jina lako kamili">
                 </div>
                 
                 <div class="form-group">
-                    <label for="registerPhone">Phone Number</label>
-                    <input type="tel" id="registerPhone" required placeholder="0712345678">
+                    <label for="registerPhone" data-en="Phone Number" data-sw="Nambari ya Simu">Nambari ya Simu</label>
+                    <input type="tel" id="registerPhone" required data-en-placeholder="0712345678" data-sw-placeholder="0712345678">
                 </div>
                 
                 <div class="form-group">
-                    <label for="registerLocation">Location</label>
-                    <input type="text" id="registerLocation" required placeholder="e.g., Nairobi, Nakuru">
+                    <label for="registerLocation" data-en="Location" data-sw="Eneo">Eneo</label>
+                    <input type="text" id="registerLocation" required data-en-placeholder="e.g., Nairobi, Nakuru" data-sw-placeholder="K.m. Nairobi, Nakuru">
                 </div>
                 
                 <div class="form-group">
-                    <label for="registerRole">I am a</label>
+                    <label for="registerRole" data-en="I am a" data-sw="Mimi ni">Mimi ni</label>
                     <select id="registerRole" required onchange="updateRoleDescription()">
-                        <option value="">Select your role</option>
-                        <option value="employer">Employer (Hiring workers)</option>
-                        <option value="employee">Employee (Looking for work)</option>
+                        <option value="" data-en="Select your role" data-sw="Chagua jukumu lako">Chagua jukumu lako</option>
+                        <option value="employer" data-en="Employer (Hiring workers)" data-sw="Mwajiri (Kuajiri wafanyikazi)">Mwajiri (Kuajiri wafanyikazi)</option>
+                        <option value="employee" data-en="Employee (Looking for work)" data-sw="Mfanyakazi (Kutafuta kazi)">Mfanyakazi (Kutafuta kazi)</option>
                     </select>
-                    <div class="role-description" id="roleDescription">
-                        Select whether you're looking to hire workers or find employment
+                    <div class="role-description" id="roleDescription" data-en="Select whether you're looking to hire workers or find employment" data-sw="Chagua kama unatafuta kuajiri wafanyikazi au kutafuta kazi">
+                        Chagua kama unatafuta kuajiri wafanyikazi au kutafuta kazi
                     </div>
                 </div>
                 
                 <div class="form-group" id="specializationField" style="display: none;">
-                    <label for="registerSpecialization">Specialization</label>
-                    <input type="text" id="registerSpecialization" placeholder="e.g., Farm Worker, Construction">
+                    <label for="registerSpecialization" data-en="Specialization" data-sw="Utaalamu">Utaalamu</label>
+                    <input type="text" id="registerSpecialization" data-en-placeholder="e.g., Farm Worker, Construction" data-sw-placeholder="K.m. Mfanyakazi Shambani, Ujenzi">
                 </div>
                 
                 <div class="form-group password-toggle">
-                    <label for="registerPassword">Password</label>
-                    <input type="password" id="registerPassword" required placeholder="Create a password">
+                    <label for="registerPassword" data-en="Password" data-sw="Nenosiri">Nenosiri</label>
+                    <input type="password" id="registerPassword" required data-en-placeholder="Create a password" data-sw-placeholder="Tengeneza nenosiri">
                     <span class="toggle-icon" onclick="togglePassword('registerPassword')">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
                 
                 <div class="form-group password-toggle">
-                    <label for="registerConfirmPassword">Confirm Password</label>
-                    <input type="password" id="registerConfirmPassword" required placeholder="Confirm your password">
+                    <label for="registerConfirmPassword" data-en="Confirm Password" data-sw="Thibitisha Nenosiri">Thibitisha Nenosiri</label>
+                    <input type="password" id="registerConfirmPassword" required data-en-placeholder="Confirm your password" data-sw-placeholder="Thibitisha nenosiri lako">
                     <span class="toggle-icon" onclick="togglePassword('registerConfirmPassword')">
                         <i class="fas fa-eye"></i>
                     </span>
@@ -341,7 +382,7 @@
                 <div id="registerMessage"></div>
                 
                 <button type="submit" class="btn-primary" id="registerBtn">
-                    <i class="fas fa-user-plus"></i> Create Account
+                    <i class="fas fa-user-plus"></i> <span data-en="Create Account" data-sw="Fungua Akaunti">Fungua Akaunti</span>
                 </button>
             </form>
         </div>
@@ -349,6 +390,56 @@
 
     <script>
         const API_BASE_URL = 'https://backita.onrender.com';
+        let currentLanguage = 'sw'; // Default to Kiswahili
+        
+        // Set language and update UI
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.lang-btn')[lang === 'en' ? 0 : 1].classList.add('active');
+            
+            // Translate page content
+            translatePage();
+        }
+        
+        // Translate the page content
+        function translatePage() {
+            // Translate text content
+            const elements = document.querySelectorAll('[data-en][data-sw]');
+            elements.forEach(element => {
+                if (currentLanguage === 'en') {
+                    element.textContent = element.getAttribute('data-en');
+                } else {
+                    element.textContent = element.getAttribute('data-sw');
+                }
+            });
+
+            // Translate placeholders
+            const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
+            placeholderElements.forEach(element => {
+                if (currentLanguage === 'en') {
+                    element.placeholder = element.getAttribute('data-en-placeholder');
+                } else {
+                    element.placeholder = element.getAttribute('data-sw-placeholder');
+                }
+            });
+
+            // Translate select options
+            const selectElements = document.querySelectorAll('select option');
+            selectElements.forEach(option => {
+                if (option.hasAttribute('data-en') && option.hasAttribute('data-sw')) {
+                    if (currentLanguage === 'en') {
+                        option.textContent = option.getAttribute('data-en');
+                    } else {
+                        option.textContent = option.getAttribute('data-sw');
+                    }
+                }
+            });
+        }
         
         // Show/hide auth forms
         function showAuthForm(formType) {
@@ -393,13 +484,25 @@
             const specializationField = document.getElementById('specializationField');
             
             if (role === 'employer') {
-                description.textContent = "You'll be able to post jobs and find workers";
+                if (currentLanguage === 'en') {
+                    description.textContent = "You'll be able to post jobs and find workers";
+                } else {
+                    description.textContent = "Utakuwa na uwezo wa kutangaza kazi na kupata wafanyikazi";
+                }
                 specializationField.style.display = 'none';
             } else if (role === 'employee') {
-                description.textContent = "You'll be able to browse and apply for jobs";
+                if (currentLanguage === 'en') {
+                    description.textContent = "You'll be able to browse and apply for jobs";
+                } else {
+                    description.textContent = "Utakuwa na uwezo wa kutafuta na kuomba kazi";
+                }
                 specializationField.style.display = 'block';
             } else {
-                description.textContent = "Select whether you're looking to hire workers or find employment";
+                if (currentLanguage === 'en') {
+                    description.textContent = "Select whether you're looking to hire workers or find employment";
+                } else {
+                    description.textContent = "Chagua kama unatafuta kuajiri wafanyikazi au kutafuta kazi";
+                }
                 specializationField.style.display = 'none';
             }
         }
@@ -428,10 +531,15 @@
             // Get form data
             const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
             
             // Validate inputs
-            if (!phone || !password) {
-                showMessage(messageDiv, 'Please fill in all fields', 'error');
+            if (!phone || !password || !role) {
+                showMessage(messageDiv, 
+                    currentLanguage === 'en' 
+                        ? 'Please fill in all fields' 
+                        : 'Tafadhali jaza sehemu zote',
+                    'error');
                 return;
             }
             
@@ -441,13 +549,16 @@
             // Prepare request data
             const loginData = {
                 phone: formattedPhone,
-                password: password
+                password: password,
+                role: role
             };
             
             try {
                 // Show loading state
                 loginBtn.disabled = true;
-                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                loginBtn.innerHTML = currentLanguage === 'en' 
+                    ? '<i class="fas fa-spinner fa-spin"></i> Logging in...' 
+                    : '<i class="fas fa-spinner fa-spin"></i> Inaanza kuingia...';
                 
                 console.log('Logging in with:', loginData);
                 
@@ -460,7 +571,22 @@
                     body: JSON.stringify(loginData)
                 });
                 
-                const data = await response.json();
+                // Check if response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Try to parse response as JSON
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                    throw new Error(currentLanguage === 'en' 
+                        ? 'Server returned an invalid response. Please try again.' 
+                        : 'Seva imerudisha jibu batili. Tafadhali jaribu tena.');
+                }
+                
                 console.log('Login response:', data);
                 
                 if (data.success) {
@@ -468,22 +594,32 @@
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showMessage(messageDiv, 'Login successful! Redirecting...', 'success');
+                    showMessage(messageDiv, 
+                        currentLanguage === 'en' 
+                            ? 'Login successful! Redirecting...' 
+                            : 'Umefanikiwa kuingia! Inaelekeza...', 
+                        'success');
                     
                     // Redirect to main application
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
                 } else {
-                    throw new Error(data.error || 'Login failed');
+                    throw new Error(data.error || (currentLanguage === 'en' ? 'Login failed' : 'Imeshindwa kuingia'));
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showMessage(messageDiv, error.message || 'Login failed. Please check your credentials and try again.', 'error');
+                showMessage(messageDiv, 
+                    error.message || (currentLanguage === 'en' 
+                        ? 'Login failed. Please check your credentials and try again.' 
+                        : 'Imeshindwa kuingia. Tafadhali angalia nywila zako na ujaribu tena.'), 
+                    'error');
             } finally {
                 // Reset button state
                 loginBtn.disabled = false;
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                loginBtn.innerHTML = currentLanguage === 'en' 
+                    ? '<i class="fas fa-sign-in-alt"></i> Login' 
+                    : '<i class="fas fa-sign-in-alt"></i> Ingia';
             }
         }
         
@@ -505,17 +641,29 @@
             
             // Validate inputs
             if (!name || !phone || !location || !role || !password || !confirmPassword) {
-                showMessage(messageDiv, 'Please fill in all required fields', 'error');
+                showMessage(messageDiv, 
+                    currentLanguage === 'en' 
+                        ? 'Please fill in all required fields' 
+                        : 'Tafadhali jaza sehemu zote zinazohitajika',
+                    'error');
                 return;
             }
             
             if (password !== confirmPassword) {
-                showMessage(messageDiv, 'Passwords do not match', 'error');
+                showMessage(messageDiv, 
+                    currentLanguage === 'en' 
+                        ? 'Passwords do not match' 
+                        : 'Nywila hazifanani',
+                    'error');
                 return;
             }
             
             if (password.length < 6) {
-                showMessage(messageDiv, 'Password must be at least 6 characters long', 'error');
+                showMessage(messageDiv, 
+                    currentLanguage === 'en' 
+                        ? 'Password must be at least 6 characters long' 
+                        : 'Nenosiri lazima liwe na herufi angalau 6',
+                    'error');
                 return;
             }
             
@@ -539,7 +687,9 @@
             try {
                 // Show loading state
                 registerBtn.disabled = true;
-                registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                registerBtn.innerHTML = currentLanguage === 'en' 
+                    ? '<i class="fas fa-spinner fa-spin"></i> Creating Account...' 
+                    : '<i class="fas fa-spinner fa-spin"></i> Inaunda Akaunti...';
                 
                 console.log('Registering with:', registerData);
                 
@@ -552,7 +702,22 @@
                     body: JSON.stringify(registerData)
                 });
                 
-                const data = await response.json();
+                // Check if response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Try to parse response as JSON
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                    throw new Error(currentLanguage === 'en' 
+                        ? 'Server returned an invalid response. Please try again.' 
+                        : 'Seva imerudisha jibu batili. Tafadhali jaribu tena.');
+                }
+                
                 console.log('Registration response:', data);
                 
                 if (data.success) {
@@ -560,22 +725,32 @@
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showMessage(messageDiv, 'Account created successfully! Redirecting...', 'success');
+                    showMessage(messageDiv, 
+                        currentLanguage === 'en' 
+                            ? 'Account created successfully! Redirecting...' 
+                            : 'Akaunti imeundwa kikamilifu! Inaelekeza...', 
+                        'success');
                     
                     // Redirect to main application
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
                 } else {
-                    throw new Error(data.error || 'Registration failed');
+                    throw new Error(data.error || (currentLanguage === 'en' ? 'Registration failed' : 'Imeshindwa kujiandikisha'));
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                showMessage(messageDiv, error.message || 'Registration failed. Please try again.', 'error');
+                showMessage(messageDiv, 
+                    error.message || (currentLanguage === 'en' 
+                        ? 'Registration failed. Please try again.' 
+                        : 'Imeshindwa kujiandikisha. Tafadhali jaribu tena.'), 
+                    'error');
             } finally {
                 // Reset button state
                 registerBtn.disabled = false;
-                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                registerBtn.innerHTML = currentLanguage === 'en' 
+                    ? '<i class="fas fa-user-plus"></i> Create Account' 
+                    : '<i class="fas fa-user-plus"></i> Fungua Akaunti';
             }
         }
         
@@ -600,8 +775,15 @@
             const user = localStorage.getItem('user');
             
             if (token && user) {
-                // User is already logged in, redirect to main app
-                window.location.href = 'index.html';
+                try {
+                    // User is already logged in, redirect to main app
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('Redirect error:', error);
+                    // If redirect fails, clear storage and stay on login page
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
             }
         }
         
@@ -609,6 +791,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkExistingAuth();
             updateRoleDescription();
+            translatePage();
         });
     </script>
 </body>
