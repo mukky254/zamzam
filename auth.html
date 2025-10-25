@@ -445,34 +445,28 @@
     </div>
 
     <script>
-        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
-        let selectedLoginRole = 'employee'; // Default login role
+        let selectedLoginRole = 'employee';
         let currentLanguage = 'sw';
         let phoneExists = false;
 
-        // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const roleSelection = document.getElementById('roleSelection');
         const signupForm = document.getElementById('signupForm');
         const messageContainer = document.getElementById('messageContainer');
         const phoneError = document.getElementById('phoneError');
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
             const userRole = localStorage.getItem('userRole');
             
             if (token && user && userRole) {
-                // User is already logged in, redirect to appropriate dashboard
                 redirectToDashboard();
                 return;
             }
 
-            // Set initial language
             const savedLanguage = localStorage.getItem('preferredLanguage');
             if (savedLanguage) {
                 currentLanguage = savedLanguage;
@@ -489,7 +483,6 @@
         }
 
         function showAuthTab(tab) {
-            // Update tabs
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if (tab === 'login') {
                 document.querySelectorAll('.auth-tab')[0].classList.add('active');
@@ -497,7 +490,6 @@
                 document.querySelectorAll('.auth-tab')[1].classList.add('active');
             }
 
-            // Show appropriate forms
             if (tab === 'login') {
                 loginForm.classList.remove('hidden');
                 roleSelection.classList.add('hidden');
@@ -513,8 +505,6 @@
 
         function selectLoginRole(role) {
             selectedLoginRole = role;
-            
-            // Update UI
             document.querySelectorAll('.login-role-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -528,7 +518,6 @@
             });
             event.currentTarget.classList.add('active');
             
-            // Update form based on role
             const nameLabel = document.getElementById('nameLabel');
             const specializationGroup = document.getElementById('specializationGroup');
             const jobTypeGroup = document.getElementById('jobTypeGroup');
@@ -551,12 +540,10 @@
                 jobTypeGroup.style.display = 'block';
             }
             
-            // Show signup form
             roleSelection.classList.add('hidden');
             signupForm.classList.remove('hidden');
         }
 
-        // Phone number validation
         async function checkPhoneExists(phone) {
             if (!phone || phone.length < 10) return;
 
@@ -591,7 +578,6 @@
             }
         }
 
-        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
@@ -613,7 +599,6 @@
         }
 
         function translatePage() {
-            // Translate text content
             const elements = document.querySelectorAll('[data-en][data-sw]');
             elements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -623,7 +608,6 @@
                 }
             });
 
-            // Translate placeholders
             const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
             placeholderElements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -652,7 +636,6 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
-            // Show loading state
             const loginBtn = document.getElementById('loginBtn');
             const loginText = document.getElementById('loginText');
             loginBtn.disabled = true;
@@ -663,22 +646,24 @@
             }
             
             try {
-                // For demo purposes - simulate API call
-                setTimeout(() => {
-                    // Simulate successful login
-                    const userData = {
-                        _id: 'user_' + Date.now(),
-                        name: selectedLoginRole === 'employee' ? 'John Doe' : 'ABC Company',
+                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
                         phone: cleanPhone,
-                        location: 'Nairobi',
-                        role: selectedLoginRole,
-                        specialization: selectedLoginRole === 'employee' ? 'Farming, Construction' : undefined,
-                        jobType: selectedLoginRole === 'employer' ? 'Farm Work, Domestic Help' : undefined
-                    };
-                    
-                    localStorage.setItem('token', 'demo_token_' + Date.now());
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    localStorage.setItem('userRole', selectedLoginRole);
+                        password: password,
+                        role: selectedLoginRole
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -690,7 +675,22 @@
                     setTimeout(() => {
                         redirectToDashboard();
                     }, 1500);
-                }, 1500);
+                    
+                } else {
+                    let errorMessage;
+                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                        errorMessage = currentLanguage === 'en' 
+                            ? 'Invalid phone number or password' 
+                            : 'Nambari ya simu au nenosiri si sahihi';
+                    } else if (data.error && data.error.includes('role')) {
+                        errorMessage = currentLanguage === 'en'
+                            ? 'This account is not registered as ' + (selectedLoginRole === 'employee' ? 'a job seeker' : 'an employer')
+                            : 'Akaunti hii haijaandikishwa kama ' + (selectedLoginRole === 'employee' ? 'mtafuta kazi' : 'mwajiri');
+                    } else {
+                        errorMessage = data.error || 'Sign in failed';
+                    }
+                    throw new Error(errorMessage);
+                }
                 
             } catch (error) {
                 showMessage(error.message, 'error');
@@ -727,7 +727,6 @@
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             
-            // Validation
             if (!name || !phone || !location || !password) {
                 showMessage(
                     currentLanguage === 'en' 
@@ -770,7 +769,20 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
-            // Show loading state
+            const userData = {
+                name: name,
+                phone: cleanPhone,
+                location: location,
+                password: password,
+                role: selectedRole
+            };
+            
+            if (selectedRole === 'employee') {
+                userData.specialization = document.getElementById('signupSpecialization').value.trim();
+            } else {
+                userData.jobType = document.getElementById('signupJobType').value.trim();
+            }
+            
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
             signupBtn.disabled = true;
@@ -781,21 +793,20 @@
             }
             
             try {
-                // For demo purposes - simulate API call
-                setTimeout(() => {
-                    const userData = {
-                        _id: 'user_' + Date.now(),
-                        name: name,
-                        phone: cleanPhone,
-                        location: location,
-                        role: selectedRole,
-                        specialization: selectedRole === 'employee' ? document.getElementById('signupSpecialization').value.trim() : undefined,
-                        jobType: selectedRole === 'employer' ? document.getElementById('signupJobType').value.trim() : undefined
-                    };
-                    
-                    localStorage.setItem('token', 'demo_token_' + Date.now());
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    localStorage.setItem('userRole', selectedRole);
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -807,7 +818,21 @@
                     setTimeout(() => {
                         redirectToDashboard();
                     }, 2000);
-                }, 1500);
+                    
+                } else {
+                    if (data.error && data.error.includes('already exists')) {
+                        phoneExists = true;
+                        phoneError.style.display = 'block';
+                        document.getElementById('signupBtn').disabled = true;
+                        throw new Error(
+                            currentLanguage === 'en'
+                                ? 'This phone number is already registered'
+                                : 'Nambari hii ya simu tayari imesajiliwa'
+                        );
+                    } else {
+                        throw new Error(data.error || 'Sign up failed');
+                    }
+                }
                 
             } catch (error) {
                 showMessage(error.message, 'error');
@@ -829,7 +854,6 @@
             } else if (userRole === 'employee') {
                 window.location.href = 'employee-dashboard.html';
             } else {
-                // Fallback
                 window.location.href = 'auth.html';
             }
         }
@@ -872,7 +896,6 @@
             messageContainer.innerHTML = '';
         }
 
-        // Global functions
         window.showAuthTab = showAuthTab;
         window.selectRole = selectRole;
         window.selectLoginRole = selectLoginRole;
