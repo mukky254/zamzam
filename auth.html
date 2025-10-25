@@ -467,7 +467,7 @@
             const userRole = localStorage.getItem('userRole');
             
             if (token && user && userRole) {
-                // User is already logged in, redirect to appropriate dashboard
+                // User is already logged in, redirect to dashboard
                 redirectToDashboard();
                 return;
             }
@@ -490,9 +490,7 @@
 
         function showAuthTab(tab) {
             // Update tabs
-            document.querySelectorAll('.auth-tab').forEach(function(t) {
-                t.classList.remove('active');
-            });
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if (tab === 'login') {
                 document.querySelectorAll('.auth-tab')[0].classList.add('active');
             } else {
@@ -517,7 +515,7 @@
             selectedLoginRole = role;
             
             // Update UI
-            document.querySelectorAll('.login-role-btn').forEach(function(btn) {
+            document.querySelectorAll('.login-role-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.currentTarget.classList.add('active');
@@ -525,7 +523,7 @@
 
         function selectRole(role) {
             selectedRole = role;
-            document.querySelectorAll('.role-option').forEach(function(option) {
+            document.querySelectorAll('.role-option').forEach(option => {
                 option.classList.remove('active');
             });
             event.currentTarget.classList.add('active');
@@ -565,7 +563,7 @@
             const cleanPhone = formatPhoneToStandard(phone);
             
             try {
-                const response = await fetch(API_BASE_URL + '/auth/check-phone', {
+                const response = await fetch(`${API_BASE_URL}/auth/check-phone`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -617,7 +615,7 @@
         function translatePage() {
             // Translate text content
             const elements = document.querySelectorAll('[data-en][data-sw]');
-            elements.forEach(function(element) {
+            elements.forEach(element => {
                 if (currentLanguage === 'en') {
                     element.textContent = element.getAttribute('data-en');
                 } else {
@@ -627,7 +625,7 @@
 
             // Translate placeholders
             const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
-            placeholderElements.forEach(function(element) {
+            placeholderElements.forEach(element => {
                 if (currentLanguage === 'en') {
                     element.placeholder = element.getAttribute('data-en-placeholder');
                 } else {
@@ -665,7 +663,7 @@
             }
             
             try {
-                const response = await fetch(API_BASE_URL + '/auth/login', {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -692,7 +690,7 @@
                         'success'
                     );
                     
-                    setTimeout(function() {
+                    setTimeout(() => {
                         redirectToDashboard();
                     }, 1500);
                 } else {
@@ -701,10 +699,9 @@
                 
             } catch (error) {
                 showMessage(
-                    error.message || 
-                    (currentLanguage === 'en' 
-                        ? 'Login failed. Please try again.' 
-                        : 'Imeshindwa kuingia. Tafadhali jaribu tena.'),
+                    currentLanguage === 'en'
+                        ? error.message
+                        : (error.message.includes('Invalid') ? 'Nambari ya simu au nenosiri si sahihi' : 'Hitilafu imetokea, tafadhali jaribu tena'),
                     'error'
                 );
             } finally {
@@ -809,7 +806,7 @@
                     userData.jobType = document.getElementById('signupJobType').value.trim();
                 }
                 
-                const response = await fetch(API_BASE_URL + '/auth/register', {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -832,7 +829,7 @@
                         'success'
                     );
                     
-                    setTimeout(function() {
+                    setTimeout(() => {
                         redirectToDashboard();
                     }, 2000);
                 } else {
@@ -841,10 +838,9 @@
                 
             } catch (error) {
                 showMessage(
-                    error.message || 
-                    (currentLanguage === 'en' 
-                        ? 'Registration failed. Please try again.' 
-                        : 'Imeshindwa kusajili. Tafadhali jaribu tena.'),
+                    currentLanguage === 'en'
+                        ? error.message
+                        : 'Hitilafu imetokea wakati wa kufungua akaunti, tafadhali jaribu tena',
                     'error'
                 );
             } finally {
@@ -858,6 +854,7 @@
         }
 
         function redirectToDashboard() {
+            // Redirect to index.html which will handle the dashboard routing
             window.location.href = 'index.html';
         }
 
@@ -888,7 +885,11 @@
         }
 
         function showMessage(message, type) {
-            messageContainer.innerHTML = '<div class="message ' + type + '">' + message + '</div>';
+            messageContainer.innerHTML = `
+                <div class="message ${type}">
+                    ${message}
+                </div>
+            `;
         }
 
         function clearMessages() {
