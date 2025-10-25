@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Mashinani - Job Portal</title>
+    <title>Kazi Mashinani - Job Seeker Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -36,9 +36,11 @@
             background-color: #f8fafc;
             color: var(--text-color);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Header Styles */
         header {
             background: var(--gradient-1);
             color: white;
@@ -126,7 +128,6 @@
             font-size: 14px;
         }
 
-        /* Navigation */
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -163,11 +164,11 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Main Content */
         .main-container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 20px;
+            flex: 1;
         }
 
         .container {
@@ -196,7 +197,6 @@
             font-weight: 700;
         }
 
-        /* Welcome Section */
         .welcome-section {
             text-align: center;
             padding: 3rem 2rem;
@@ -216,7 +216,6 @@
             opacity: 0.9;
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -259,7 +258,28 @@
             font-weight: 600;
         }
 
-        /* Job Listings */
+        .search-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .job-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -394,7 +414,6 @@
             background: #dc2626;
         }
 
-        /* Professional Blog Section */
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -490,12 +509,62 @@
             gap: 0.7rem;
         }
 
-        /* Footer */
+        .application-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+        }
+
         footer {
             background: var(--primary-color);
             color: white;
             padding: 2rem 0;
-            margin-top: 3rem;
+            margin-top: auto;
         }
 
         .footer-content {
@@ -531,7 +600,6 @@
             transform: translateY(-3px);
         }
 
-        /* Loading and Messages */
         .loading {
             text-align: center;
             padding: 2rem;
@@ -557,34 +625,6 @@
             border: 1px solid #c3e6cb;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -834,14 +874,12 @@
     </footer>
 
     <script>
-        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let currentUser = null;
         let currentJobs = [];
         let currentApplications = [];
         let currentLanguage = 'en';
 
-        // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthentication();
         });
@@ -885,16 +923,13 @@
         }
 
         function initializeApp() {
-            // Update UI with user info
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Job Seeker' : 'Mtafuta Kazi';
             
-            // Update welcome message
             document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
                 ? `Welcome ${currentUser.name}!` 
                 : `Karibu ${currentUser.name}!`;
             
-            // Set language
             const savedLanguage = localStorage.getItem('preferredLanguage');
             if (savedLanguage) {
                 currentLanguage = savedLanguage;
@@ -902,29 +937,24 @@
             updateLanguageDisplay();
             translatePage();
             
-            // Load initial data
             loadStats();
             loadJobs();
             loadApplications();
             loadBlogs();
         }
 
-        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
             updateLanguageDisplay();
             translatePage();
             
-            // Update welcome message
             document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
                 ? `Welcome ${currentUser.name}!` 
                 : `Karibu ${currentUser.name}!`;
                 
-            // Update role badge
             document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Job Seeker' : 'Mtafuta Kazi';
             
-            // Reload content
             loadStats();
             loadJobs();
             loadBlogs();
@@ -963,10 +993,8 @@
             });
         }
 
-        // Stats functions
         async function loadStats() {
             try {
-                // Update stats based on loaded data
                 document.getElementById('totalJobs').textContent = currentJobs.length;
                 document.getElementById('totalApplications').textContent = currentApplications.length;
                 document.getElementById('acceptedApplications').textContent = currentApplications.filter(app => app.status === 'accepted').length;
@@ -975,7 +1003,6 @@
             }
         }
 
-        // Blog functions with professional design
         async function loadBlogs() {
             try {
                 const response = await fetch(`${API_BASE_URL}/blogs`, {
@@ -992,7 +1019,6 @@
                         throw new Error('Failed to load blogs');
                     }
                 } else {
-                    // Fallback to sample blogs
                     loadSampleBlogs();
                 }
             } catch (error) {
@@ -1024,17 +1050,6 @@
                     category: currentLanguage === 'en' ? 'Industry News' : 'Taarifa za Sekta',
                     date: '2024-01-10',
                     readTime: '4 min read'
-                },
-                {
-                    id: 3,
-                    title: currentLanguage === 'en' ? 'How to Prepare for a Job Interview in Rural Areas' : 'Jinsi ya Kujiandaa kwa Mahojiano ya Kazi Vijijini',
-                    description: currentLanguage === 'en' 
-                        ? 'Learn the key steps to prepare for job interviews in rural settings, including what to wear, questions to expect, and how to showcase your skills.' 
-                        : 'Jifunze hatua muhimu za kujiandaa kwa mahojiano ya kazi katika mazingira ya vijijini, ikiwa ni pamoja na mavazi, maswali ya kutarajia, na jinsi ya kuonyesha ujuzi wako.',
-                    image: 'https://images.unsplash.com/photo-1551836026-d5c088a2d16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                    category: currentLanguage === 'en' ? 'Interview Tips' : 'Vidokezo vya Mahojiano',
-                    date: '2024-01-05',
-                    readTime: '6 min read'
                 }
             ];
             displayBlogs(blogData);
@@ -1069,11 +1084,9 @@
         }
 
         function openBlogModal(blogId) {
-            // Implementation for blog modal
             alert(currentLanguage === 'en' ? 'Blog content would open here' : 'Maudhui ya blog yatafungua hapa');
         }
 
-        // Job functions - Fetch from MongoDB
         async function loadJobs() {
             try {
                 const response = await fetch(`${API_BASE_URL}/jobs`, {
@@ -1092,53 +1105,19 @@
                         throw new Error('Failed to load jobs');
                     }
                 } else {
-                    // Fallback to sample jobs
-                    loadSampleJobs();
+                    throw new Error('Failed to fetch jobs');
                 }
             } catch (error) {
                 console.error('Error loading jobs:', error);
-                loadSampleJobs();
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Failed to load jobs. Please try again later.' 
+                        : 'Imeshindwa kupakia kazi. Tafadhali jaribu tena baadaye.',
+                    'error'
+                );
             }
         }
 
-        function loadSampleJobs() {
-            currentJobs = [
-                {
-                    _id: '1',
-                    title: 'Farm Worker',
-                    description: 'Looking for experienced farm workers for crop cultivation and animal care.',
-                    location: 'Nakuru',
-                    category: 'Agriculture',
-                    phone: '254712345678',
-                    businessType: 'Farm',
-                    createdAt: new Date()
-                },
-                {
-                    _id: '2',
-                    title: 'Construction Helper',
-                    description: 'Need helpers for construction site work. No experience required, training provided.',
-                    location: 'Kiambu',
-                    category: 'Construction',
-                    phone: '254723456789',
-                    businessType: 'Construction Company',
-                    createdAt: new Date()
-                },
-                {
-                    _id: '3',
-                    title: 'Domestic Worker',
-                    description: 'Seeking reliable domestic worker for household chores and childcare.',
-                    location: 'Nairobi',
-                    category: 'Domestic',
-                    phone: '254734567890',
-                    businessType: 'Individual',
-                    createdAt: new Date()
-                }
-            ];
-            displayJobs();
-            loadStats();
-        }
-
-        // Applications functions - Fetch from MongoDB
         async function loadApplications() {
             try {
                 const response = await fetch(`${API_BASE_URL}/applications/my-applications`, {
@@ -1277,7 +1256,6 @@
             }).join('');
         }
 
-        // Job application function - Save to MongoDB
         async function applyForJob(jobId) {
             try {
                 const response = await fetch(`${API_BASE_URL}/applications/apply`, {
@@ -1306,24 +1284,7 @@
                         throw new Error(data.error || 'Application failed');
                     }
                 } else {
-                    // Simulate successful application for demo
-                    showMessage(
-                        currentLanguage === 'en' 
-                            ? 'Application submitted successfully!' 
-                            : 'Ombi lako limewasilishwa kikamilifu!',
-                        'success'
-                    );
-                    // Add to current applications for demo
-                    const job = currentJobs.find(j => j._id === jobId);
-                    if (job) {
-                        currentApplications.push({
-                            jobId: job,
-                            status: 'pending',
-                            appliedDate: new Date()
-                        });
-                        displayApplications();
-                        loadStats();
-                    }
+                    throw new Error('Failed to submit application');
                 }
             } catch (error) {
                 console.error('Error applying for job:', error);
@@ -1336,7 +1297,6 @@
             }
         }
 
-        // Filter jobs function
         function filterJobs(e) {
             e.preventDefault();
             const positionQuery = document.getElementById('positionSearch').value.toLowerCase();
@@ -1407,7 +1367,6 @@
             `).join('');
         }
 
-        // Profile functions
         function loadProfile() {
             document.getElementById('profileName').value = currentUser.name;
             document.getElementById('profilePhone').value = currentUser.phone;
@@ -1416,24 +1375,19 @@
         }
 
         function editProfile() {
-            // Implementation for profile editing
             alert(currentLanguage === 'en' ? 'Profile editing would open here' : 'Kuhariri wasifu kungafungua hapa');
         }
 
-        // Navigation functions
         function showSection(section) {
-            // Hide all sections
             document.getElementById('homeSection').style.display = 'none';
             document.getElementById('jobsSection').style.display = 'none';
             document.getElementById('applicationsSection').style.display = 'none';
             document.getElementById('profileSection').style.display = 'none';
             
-            // Remove active class from all nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // Show selected section and set active nav
             if (section === 'home') {
                 document.getElementById('homeSection').style.display = 'block';
                 document.querySelectorAll('.nav-item')[0].classList.add('active');
@@ -1451,19 +1405,13 @@
         }
 
         function logout() {
-            // Clear all stored data
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('userRole');
-            sessionStorage.removeItem('currentUser');
-            sessionStorage.removeItem('userRole');
-            
-            // Redirect to auth page
             window.location.href = 'auth.html';
         }
 
         function showMessage(message, type) {
-            // Create a temporary message display
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
             messageDiv.style.position = 'fixed';
@@ -1475,7 +1423,6 @@
             
             document.body.appendChild(messageDiv);
             
-            // Remove message after 3 seconds
             setTimeout(() => {
                 if (document.body.contains(messageDiv)) {
                     document.body.removeChild(messageDiv);
@@ -1491,7 +1438,6 @@
             window.open('mailto:support@kazimashinani.com');
         }
 
-        // Global functions
         window.showSection = showSection;
         window.toggleLanguage = toggleLanguage;
         window.openBlogModal = openBlogModal;
