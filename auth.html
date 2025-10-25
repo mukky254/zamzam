@@ -675,9 +675,9 @@
                     })
                 });
                 
-                const data = await response.json();
-                
                 if (response.ok) {
+                    const data = await response.json();
+                    
                     // Store user data and token
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -694,14 +694,15 @@
                         redirectToDashboard();
                     }, 1500);
                 } else {
-                    throw new Error(data.message || 'Login failed');
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Login failed');
                 }
                 
             } catch (error) {
                 showMessage(
                     currentLanguage === 'en'
-                        ? error.message
-                        : (error.message.includes('Invalid') ? 'Nambari ya simu au nenosiri si sahihi' : 'Hitilafu imetokea, tafadhali jaribu tena'),
+                        ? error.message || 'Login failed. Please try again.'
+                        : (error.message === 'Invalid credentials' ? 'Nambari ya simu au nenosiri si sahihi' : 'Imeshindwa kuingia. Tafadhali jaribu tena.'),
                     'error'
                 );
             } finally {
@@ -780,6 +781,22 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
+            // Prepare user data
+            const userData = {
+                name: name,
+                phone: cleanPhone,
+                location: location,
+                password: password,
+                role: selectedRole
+            };
+            
+            // Add role-specific fields
+            if (selectedRole === 'employee') {
+                userData.specialization = document.getElementById('signupSpecialization').value.trim();
+            } else {
+                userData.jobType = document.getElementById('signupJobType').value.trim();
+            }
+            
             // Show loading state
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
@@ -791,21 +808,6 @@
             }
             
             try {
-                const userData = {
-                    name: name,
-                    phone: cleanPhone,
-                    location: location,
-                    password: password,
-                    role: selectedRole
-                };
-                
-                // Add role-specific fields
-                if (selectedRole === 'employee') {
-                    userData.specialization = document.getElementById('signupSpecialization').value.trim();
-                } else {
-                    userData.jobType = document.getElementById('signupJobType').value.trim();
-                }
-                
                 const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: 'POST',
                     headers: {
@@ -814,9 +816,9 @@
                     body: JSON.stringify(userData)
                 });
                 
-                const data = await response.json();
-                
                 if (response.ok) {
+                    const data = await response.json();
+                    
                     // Store user data and token
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -833,14 +835,15 @@
                         redirectToDashboard();
                     }, 2000);
                 } else {
-                    throw new Error(data.message || 'Registration failed');
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Registration failed');
                 }
                 
             } catch (error) {
                 showMessage(
                     currentLanguage === 'en'
-                        ? error.message
-                        : 'Hitilafu imetokea wakati wa kufungua akaunti, tafadhali jaribu tena',
+                        ? error.message || 'Registration failed. Please try again.'
+                        : 'Imeshindwa kujiandikisha. Tafadhali jaribu tena.',
                     'error'
                 );
             } finally {
@@ -854,7 +857,6 @@
         }
 
         function redirectToDashboard() {
-            // Redirect to index.html which will handle the dashboard routing
             window.location.href = 'index.html';
         }
 
