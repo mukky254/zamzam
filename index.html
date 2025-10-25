@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Mashinani - Job Seeker Dashboard</title>
+    <title>Kazi Mashinani - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -41,6 +41,7 @@
             flex-direction: column;
         }
 
+        /* Header Styles */
         header {
             background: var(--gradient-1);
             color: white;
@@ -128,6 +129,7 @@
             font-size: 14px;
         }
 
+        /* Navigation */
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -164,6 +166,7 @@
             box-shadow: var(--shadow-md);
         }
 
+        /* Main Content */
         .main-container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -197,6 +200,7 @@
             font-weight: 700;
         }
 
+        /* Welcome Section */
         .welcome-section {
             text-align: center;
             padding: 3rem 2rem;
@@ -216,6 +220,7 @@
             opacity: 0.9;
         }
 
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -258,28 +263,7 @@
             font-weight: 600;
         }
 
-        .search-container {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid #e2e8f0;
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 1rem;
-            align-items: end;
-        }
-
-        @media (max-width: 768px) {
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        /* Job Listings */
         .job-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -414,6 +398,34 @@
             background: #dc2626;
         }
 
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+        }
+
+        /* Professional Blog Section */
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -509,6 +521,7 @@
             gap: 0.7rem;
         }
 
+        /* Applications Section */
         .application-status {
             display: inline-flex;
             align-items: center;
@@ -534,32 +547,7 @@
             color: #dc2626;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
-        }
-
+        /* Footer */
         footer {
             background: var(--primary-color);
             color: white;
@@ -600,6 +588,7 @@
             transform: translateY(-3px);
         }
 
+        /* Loading and Messages */
         .loading {
             text-align: center;
             padding: 2rem;
@@ -625,6 +614,7 @@
             border: 1px solid #c3e6cb;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -656,6 +646,50 @@
 
         .hidden {
             display: none;
+        }
+
+        /* Employer Specific Styles */
+        .employer-only {
+            display: none;
+        }
+
+        .employee-only {
+            display: none;
+        }
+
+        .job-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #d97706;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
         }
     </style>
 </head>
@@ -689,7 +723,8 @@
         </div>
     </header>
 
-    <div class="nav-container">
+    <!-- Employee Navigation -->
+    <div class="nav-container employee-only">
         <div class="nav-item active" onclick="showSection('home')">
             <i class="fas fa-home"></i> <span data-en="Home" data-sw="Nyumbani">Nyumbani</span>
         </div>
@@ -704,12 +739,31 @@
         </div>
     </div>
 
+    <!-- Employer Navigation -->
+    <div class="nav-container employer-only">
+        <div class="nav-item active" onclick="showSection('home')">
+            <i class="fas fa-home"></i> <span data-en="Home" data-sw="Nyumbani">Nyumbani</span>
+        </div>
+        <div class="nav-item" onclick="showSection('post')">
+            <i class="fas fa-plus-circle"></i> <span data-en="Post Job" data-sw="Tanga Kazi">Tanga Kazi</span>
+        </div>
+        <div class="nav-item" onclick="showSection('myJobs')">
+            <i class="fas fa-list"></i> <span data-en="My Jobs" data-sw="Kazi Zangu">Kazi Zangu</span>
+        </div>
+        <div class="nav-item" onclick="showSection('employees')">
+            <i class="fas fa-users"></i> <span data-en="Find Workers" data-sw="Tafuta Wafanyikazi">Tafuta Wafanyikazi</span>
+        </div>
+        <div class="nav-item" onclick="showSection('profile')">
+            <i class="fas fa-user"></i> <span data-en="My Profile" data-sw="Wasifu Wangu">Wasifu Wangu</span>
+        </div>
+    </div>
+
     <div class="main-container">
         <!-- Home Section -->
         <section id="homeSection">
             <div class="welcome-section">
                 <h1 id="welcomeMessage" data-en="Welcome to Kazi Mashinani!" data-sw="Karibu Kazi Mashinani!">Karibu Kazi Mashinani!</h1>
-                <p data-en="Find your perfect job opportunity in rural areas" data-sw="Tafuta fursa bora za kazi katika maeneo ya vijijini">Tafuta fursa bora za kazi katika maeneo ya vijijini</p>
+                <p id="welcomeSubtitle" data-en="Find your perfect job opportunity in rural areas" data-sw="Tafuta fursa bora za kazi katika maeneo ya vijijini">Tafuta fursa bora za kazi katika maeneo ya vijijini</p>
             </div>
 
             <!-- Stats Section -->
@@ -772,7 +826,7 @@
             </div>
         </section>
 
-        <!-- Jobs Section -->
+        <!-- Jobs Section (Employee) -->
         <section id="jobsSection" style="display: none;">
             <div class="container">
                 <div class="section-header">
@@ -807,7 +861,7 @@
             </div>
         </section>
 
-        <!-- Applications Section -->
+        <!-- Applications Section (Employee) -->
         <section id="applicationsSection" style="display: none;">
             <div class="container">
                 <div class="section-header">
@@ -823,6 +877,93 @@
             </div>
         </section>
 
+        <!-- Post Job Section (Employer) -->
+        <section id="postJobSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <h2 data-en="Post a Job Opportunity" data-sw="Tanga Fursa Ya Kazi">Tanga Fursa Ya Kazi</h2>
+                </div>
+                
+                <form id="jobForm">
+                    <div class="form-group">
+                        <label data-en="Job Title *" data-sw="Kichwa Cha Kazi *">Kichwa Cha Kazi *</label>
+                        <input type="text" id="jobTitle" required data-en-placeholder="e.g., Farm Worker, Construction Helper" data-sw-placeholder="K.m. Mfanyakazi Shambani, Msaidizi Ujenzi">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-en="Job Description *" data-sw="Maelezo Ya Kazi *">Maelezo Ya Kazi *</label>
+                        <textarea id="jobDescription" required rows="4" data-en-placeholder="Describe the job responsibilities and requirements..." data-sw-placeholder="Eleza majukumu ya kazi na mahitaji..."></textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label data-en="Location *" data-sw="Eneo *">Eneo *</label>
+                            <input type="text" id="jobLocation" required data-en-placeholder="e.g., Nairobi, Nakuru" data-sw-placeholder="K.m. Nairobi, Nakuru">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Category" data-sw="Aina">Aina</label>
+                            <select id="jobCategory">
+                                <option value="general" data-en="General" data-sw="Jumla">Jumla</option>
+                                <option value="agriculture" data-en="Agriculture" data-sw="Kilimo">Kilimo</option>
+                                <option value="construction" data-en="Construction" data-sw="Ujenzi">Ujenzi</option>
+                                <option value="domestic" data-en="Domestic Work" data-sw="Kazi Ya Nyumbani">Kazi Ya Nyumbani</option>
+                                <option value="driving" data-en="Driving" data-sw="Udereva">Udereva</option>
+                                <option value="retail" data-en="Retail" data-sw="Biashara">Biashara</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label data-en="Phone Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
+                            <input type="tel" id="jobPhone" required placeholder="0712345678">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Business Type" data-sw="Aina ya Biashara">Aina ya Biashara</label>
+                            <input type="text" id="businessType" data-en-placeholder="e.g., Farm, Construction Company" data-sw-placeholder="K.m. Shamba, Kampuni ya Ujenzi">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> <span data-en="Post Job" data-sw="Tanga Kazi">Tanga Kazi</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- My Jobs Section (Employer) -->
+        <section id="myJobsSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-list"></i>
+                    <h2 data-en="My Posted Jobs" data-sw="Kazi Nilizotangaza">Kazi Nilizotangaza</h2>
+                </div>
+                
+                <div class="job-grid" id="myJobListings">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> <span data-en="Loading your jobs..." data-sw="Inapakia kazi zako...">Inapakia kazi zako...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Employees Section (Employer) -->
+        <section id="employeesSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-users"></i>
+                    <h2 data-en="Available Workers" data-sw="Wafanyikazi Walioopo">Wafanyikazi Walioopo</h2>
+                </div>
+                
+                <div class="job-grid" id="employeeListings">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> <span data-en="Loading workers..." data-sw="Inapakia wafanyikazi...">Inapakia wafanyikazi...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Profile Section -->
         <section id="profileSection" style="display: none;">
             <div class="container">
@@ -833,7 +974,7 @@
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                     <div class="form-group">
-                        <label data-en="Full Name" data-sw="Jina Kamili">Jina Kamili</label>
+                        <label id="nameLabel" data-en="Full Name" data-sw="Jina Kamili">Jina Kamili</label>
                         <input type="text" id="profileName" readonly>
                     </div>
                     <div class="form-group">
@@ -845,7 +986,7 @@
                         <input type="text" id="profileLocation" readonly>
                     </div>
                     <div class="form-group">
-                        <label data-en="Specialization" data-sw="Utaalamu">Utaalamu</label>
+                        <label id="specializationLabel" data-en="Specialization" data-sw="Utaalamu">Utaalamu</label>
                         <input type="text" id="profileSpecialization" readonly>
                     </div>
                 </div>
@@ -860,7 +1001,7 @@
     <footer>
         <div class="footer-content">
             <div>
-                <h3 data-en="Kazi Mashinani - Empowering Rural Job Seekers" data-sw="Kazi Mashinani - Kuwawezesha Watafuta Kazi Vijijini">Kazi Mashinani - Kuwawezesha Watafuta Kazi Vijijini</h3>
+                <h3 id="footerText" data-en="Kazi Mashinani - Empowering Rural Job Seekers" data-sw="Kazi Mashinani - Kuwawezesha Watafuta Kazi Vijijini">Kazi Mashinani - Kuwawezesha Watafuta Kazi Vijijini</h3>
             </div>
             <div class="footer-contact">
                 <div class="contact-icon" onclick="contactPhone()">
@@ -874,12 +1015,17 @@
     </footer>
 
     <script>
+        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let currentUser = null;
         let currentJobs = [];
         let currentApplications = [];
+        let myJobs = [];
+        let currentEmployees = [];
         let currentLanguage = 'en';
+        let userRole = null;
 
+        // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthentication();
         });
@@ -893,12 +1039,7 @@
                 if (token && storedUser && storedRole) {
                     try {
                         currentUser = JSON.parse(storedUser);
-                        currentUser.role = storedRole;
-                        
-                        if (currentUser.role !== 'employee') {
-                            window.location.href = 'auth.html';
-                            return;
-                        }
+                        userRole = storedRole;
                         
                         initializeApp();
                         return;
@@ -923,13 +1064,10 @@
         }
 
         function initializeApp() {
+            // Update UI with user info
             document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Job Seeker' : 'Mtafuta Kazi';
             
-            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
-                ? `Welcome ${currentUser.name}!` 
-                : `Karibu ${currentUser.name}!`;
-            
+            // Set language
             const savedLanguage = localStorage.getItem('preferredLanguage');
             if (savedLanguage) {
                 currentLanguage = savedLanguage;
@@ -937,26 +1075,72 @@
             updateLanguageDisplay();
             translatePage();
             
+            // Setup role-specific UI
+            setupRoleUI();
+            
+            // Load initial data
             loadStats();
-            loadJobs();
-            loadApplications();
             loadBlogs();
+            
+            // Setup event listeners
+            if (userRole === 'employer') {
+                document.getElementById('jobForm').addEventListener('submit', handlePostJob);
+            }
         }
 
+        function setupRoleUI() {
+            if (userRole === 'employee') {
+                document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Job Seeker' : 'Mtafuta Kazi';
+                document.querySelector('.employee-only').style.display = 'flex';
+                document.querySelector('.employer-only').style.display = 'none';
+                document.getElementById('welcomeSubtitle').textContent = currentLanguage === 'en' 
+                    ? 'Find your perfect job opportunity in rural areas' 
+                    : 'Tafuta fursa bora za kazi katika maeneo ya vijijini';
+                document.getElementById('footerText').textContent = currentLanguage === 'en' 
+                    ? 'Kazi Mashinani - Empowering Rural Job Seekers' 
+                    : 'Kazi Mashinani - Kuwawezesha Watafuta Kazi Vijijini';
+                document.getElementById('nameLabel').textContent = currentLanguage === 'en' ? 'Full Name' : 'Jina Kamili';
+                document.getElementById('specializationLabel').textContent = currentLanguage === 'en' ? 'Specialization' : 'Utaalamu';
+                
+                // Load employee-specific data
+                loadJobs();
+                loadApplications();
+            } else if (userRole === 'employer') {
+                document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Employer' : 'Mwajiri';
+                document.querySelector('.employee-only').style.display = 'none';
+                document.querySelector('.employer-only').style.display = 'flex';
+                document.getElementById('welcomeSubtitle').textContent = currentLanguage === 'en' 
+                    ? 'Find qualified workers for your business needs' 
+                    : 'Tafuta wafanyikazi waliohitimu kwa mahitaji ya biashara yako';
+                document.getElementById('footerText').textContent = currentLanguage === 'en' 
+                    ? 'Kazi Mashinani - Connecting Employers with Rural Talent' 
+                    : 'Kazi Mashinani - Kuunganisha Waajiri na Watalanta Vijijini';
+                document.getElementById('nameLabel').textContent = currentLanguage === 'en' ? 'Business Name' : 'Jina la Biashara';
+                document.getElementById('specializationLabel').textContent = currentLanguage === 'en' ? 'Business Type' : 'Aina ya Biashara';
+                
+                // Load employer-specific data
+                loadMyJobs();
+                loadEmployees();
+            }
+            
+            // Update welcome message
+            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
+                ? `Welcome ${currentUser.name}!` 
+                : `Karibu ${currentUser.name}!`;
+        }
+
+        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
             updateLanguageDisplay();
             translatePage();
             
-            document.getElementById('welcomeMessage').textContent = currentLanguage === 'en' 
-                ? `Welcome ${currentUser.name}!` 
-                : `Karibu ${currentUser.name}!`;
-                
-            document.getElementById('userRoleBadge').textContent = currentLanguage === 'en' ? 'Job Seeker' : 'Mtafuta Kazi';
+            // Update role-specific content
+            setupRoleUI();
             
+            // Reload content
             loadStats();
-            loadJobs();
             loadBlogs();
         }
 
@@ -993,66 +1177,84 @@
             });
         }
 
+        // Stats functions
         async function loadStats() {
             try {
-                document.getElementById('totalJobs').textContent = currentJobs.length;
-                document.getElementById('totalApplications').textContent = currentApplications.length;
-                document.getElementById('acceptedApplications').textContent = currentApplications.filter(app => app.status === 'accepted').length;
+                if (userRole === 'employee') {
+                    document.getElementById('totalJobs').textContent = currentJobs.length;
+                    document.getElementById('totalApplications').textContent = currentApplications.length;
+                    document.getElementById('acceptedApplications').textContent = currentApplications.filter(app => app.status === 'accepted').length;
+                } else if (userRole === 'employer') {
+                    document.getElementById('totalJobs').textContent = myJobs.length;
+                    document.getElementById('totalApplications').textContent = myJobs.reduce((total, job) => total + (job.applications || 0), 0);
+                    document.getElementById('acceptedApplications').textContent = myJobs.reduce((total, job) => total + (job.hired || 0), 0);
+                }
             } catch (error) {
                 console.error('Error loading stats:', error);
             }
         }
 
+        // Blog functions
         async function loadBlogs() {
             try {
-                const response = await fetch(`${API_BASE_URL}/blogs`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
+                let blogData = [];
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        displayBlogs(data.blogs);
-                    } else {
-                        throw new Error('Failed to load blogs');
-                    }
-                } else {
-                    loadSampleBlogs();
+                if (userRole === 'employee') {
+                    blogData = [
+                        {
+                            id: 1,
+                            title: currentLanguage === 'en' ? '5 Essential Skills for Rural Employment' : 'Ujuzi 5 Muhimu kwa Ajira Vijijini',
+                            description: currentLanguage === 'en' 
+                                ? 'Discover the key skills that employers in rural areas are looking for and how to develop them to boost your employability.' 
+                                : 'Gundua ujuzi muhimu unaotafutwa na waajiri katika maeneo ya vijijini na jinsi ya kuukuza ili kuboresha uwezo wako wa kuajiriwa.',
+                            image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                            category: currentLanguage === 'en' ? 'Career Tips' : 'Vidokezo Vya Kazi',
+                            date: '2024-01-15',
+                            readTime: '5 min read'
+                        },
+                        {
+                            id: 2,
+                            title: currentLanguage === 'en' ? 'Agriculture Sector Opportunities in 2024' : 'Fursa Katika Sekta ya Kilimo Mwaka 2024',
+                            description: currentLanguage === 'en' 
+                                ? 'Explore the growing opportunities in the agricultural sector and how to position yourself for success in rural farming jobs.' 
+                                : 'Chunguza fursa zinazokua katika sekta ya kilimo na jinsi ya kujiweka katika nafasi ya kufanikiwa katika kazi za kilimo vijijini.',
+                            image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                            category: currentLanguage === 'en' ? 'Industry News' : 'Taarifa za Sekta',
+                            date: '2024-01-10',
+                            readTime: '4 min read'
+                        }
+                    ];
+                } else if (userRole === 'employer') {
+                    blogData = [
+                        {
+                            id: 1,
+                            title: currentLanguage === 'en' ? 'How to Attract Quality Workers in Rural Areas' : 'Jinsi ya Kuvutia Wafanyikazi Waliohitimu Vijijini',
+                            description: currentLanguage === 'en' 
+                                ? 'Learn effective strategies for attracting and retaining skilled workers in rural business settings.' 
+                                : 'Jifunze mikakati bora ya kuvutia na kuwaweka wafanyikazi wenye ujuzi katika mazingira ya biashara vijijini.',
+                            image: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                            category: currentLanguage === 'en' ? 'Hiring Tips' : 'Vidokezo Vya Kuajiri',
+                            date: '2024-01-12',
+                            readTime: '5 min read'
+                        },
+                        {
+                            id: 2,
+                            title: currentLanguage === 'en' ? 'Effective Employee Management in Agriculture' : 'Usimamizi Bora wa Wafanyikazi Katika Kilimo',
+                            description: currentLanguage === 'en' 
+                                ? 'Discover best practices for managing agricultural workers and improving productivity on your farm.' 
+                                : 'Gundua mazoea bora ya kusimamia wafanyikazi wa kilimo na kuboresha tija shambani mwako.',
+                            image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                            category: currentLanguage === 'en' ? 'Management' : 'Usimamizi',
+                            date: '2024-01-08',
+                            readTime: '6 min read'
+                        }
+                    ];
                 }
+                
+                displayBlogs(blogData);
             } catch (error) {
                 console.error('Error loading blogs:', error);
-                loadSampleBlogs();
             }
-        }
-
-        function loadSampleBlogs() {
-            const blogData = [
-                {
-                    id: 1,
-                    title: currentLanguage === 'en' ? '5 Essential Skills for Rural Employment' : 'Ujuzi 5 Muhimu kwa Ajira Vijijini',
-                    description: currentLanguage === 'en' 
-                        ? 'Discover the key skills that employers in rural areas are looking for and how to develop them to boost your employability.' 
-                        : 'Gundua ujuzi muhimu unaotafutwa na waajiri katika maeneo ya vijijini na jinsi ya kuukuza ili kuboresha uwezo wako wa kuajiriwa.',
-                    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                    category: currentLanguage === 'en' ? 'Career Tips' : 'Vidokezo Vya Kazi',
-                    date: '2024-01-15',
-                    readTime: '5 min read'
-                },
-                {
-                    id: 2,
-                    title: currentLanguage === 'en' ? 'Agriculture Sector Opportunities in 2024' : 'Fursa Katika Sekta ya Kilimo Mwaka 2024',
-                    description: currentLanguage === 'en' 
-                        ? 'Explore the growing opportunities in the agricultural sector and how to position yourself for success in rural farming jobs.' 
-                        : 'Chunguza fursa zinazokua katika sekta ya kilimo na jinsi ya kujiweka katika nafasi ya kufanikiwa katika kazi za kilimo vijijini.',
-                    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                    category: currentLanguage === 'en' ? 'Industry News' : 'Taarifa za Sekta',
-                    date: '2024-01-10',
-                    readTime: '4 min read'
-                }
-            ];
-            displayBlogs(blogData);
         }
 
         function displayBlogs(blogs) {
@@ -1087,56 +1289,44 @@
             alert(currentLanguage === 'en' ? 'Blog content would open here' : 'Maudhui ya blog yatafungua hapa');
         }
 
+        // Employee functions
         async function loadJobs() {
             try {
-                const response = await fetch(`${API_BASE_URL}/jobs`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // Sample jobs data
+                currentJobs = [
+                    {
+                        _id: '1',
+                        title: 'Farm Worker',
+                        description: 'Looking for experienced farm workers for crop cultivation and animal care.',
+                        location: 'Nakuru',
+                        category: 'Agriculture',
+                        phone: '254712345678',
+                        businessType: 'Farm',
+                        createdAt: new Date()
+                    },
+                    {
+                        _id: '2',
+                        title: 'Construction Helper',
+                        description: 'Need helpers for construction site work. No experience required, training provided.',
+                        location: 'Kiambu',
+                        category: 'Construction',
+                        phone: '254723456789',
+                        businessType: 'Construction Company',
+                        createdAt: new Date()
                     }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        currentJobs = data.jobs;
-                        displayJobs();
-                        loadStats();
-                    } else {
-                        throw new Error('Failed to load jobs');
-                    }
-                } else {
-                    throw new Error('Failed to fetch jobs');
-                }
+                ];
+                displayJobs();
+                loadStats();
             } catch (error) {
                 console.error('Error loading jobs:', error);
-                showMessage(
-                    currentLanguage === 'en' 
-                        ? 'Failed to load jobs. Please try again later.' 
-                        : 'Imeshindwa kupakia kazi. Tafadhali jaribu tena baadaye.',
-                    'error'
-                );
             }
         }
 
         async function loadApplications() {
             try {
-                const response = await fetch(`${API_BASE_URL}/applications/my-applications`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        currentApplications = data.applications;
-                        displayApplications();
-                        loadStats();
-                    }
-                } else {
-                    currentApplications = [];
-                    displayApplications();
-                }
+                currentApplications = [];
+                displayApplications();
+                loadStats();
             } catch (error) {
                 console.error('Error loading applications:', error);
                 currentApplications = [];
@@ -1256,23 +1446,19 @@
             }).join('');
         }
 
+        // Job application function
         async function applyForJob(jobId) {
             try {
-                const response = await fetch(`${API_BASE_URL}/applications/apply`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify({
-                        jobId: jobId,
-                        applicantId: currentUser._id
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
+                // Simulate API call
+                setTimeout(() => {
+                    const job = currentJobs.find(j => j._id === jobId);
+                    if (job) {
+                        currentApplications.push({
+                            jobId: job,
+                            status: 'pending',
+                            appliedDate: new Date()
+                        });
+                        
                         showMessage(
                             currentLanguage === 'en' 
                                 ? 'Application submitted successfully!' 
@@ -1280,12 +1466,9 @@
                             'success'
                         );
                         loadApplications();
-                    } else {
-                        throw new Error(data.error || 'Application failed');
                     }
-                } else {
-                    throw new Error('Failed to submit application');
-                }
+                }, 1000);
+                
             } catch (error) {
                 console.error('Error applying for job:', error);
                 showMessage(
@@ -1297,6 +1480,7 @@
             }
         }
 
+        // Filter jobs function
         function filterJobs(e) {
             e.preventDefault();
             const positionQuery = document.getElementById('positionSearch').value.toLowerCase();
@@ -1367,27 +1551,294 @@
             `).join('');
         }
 
+        // Employer functions
+        async function loadMyJobs() {
+            try {
+                myJobs = [
+                    {
+                        _id: '1',
+                        title: 'Farm Worker Needed',
+                        description: 'Looking for experienced farm workers for crop cultivation and animal care.',
+                        location: 'Nakuru',
+                        category: 'Agriculture',
+                        phone: currentUser.phone,
+                        businessType: 'Farm',
+                        createdAt: new Date(),
+                        applications: 3,
+                        hired: 1
+                    },
+                    {
+                        _id: '2',
+                        title: 'Construction Helpers',
+                        description: 'Need helpers for construction site work. No experience required, training provided.',
+                        location: 'Kiambu',
+                        category: 'Construction',
+                        phone: currentUser.phone,
+                        businessType: 'Construction Company',
+                        createdAt: new Date(),
+                        applications: 5,
+                        hired: 2
+                    }
+                ];
+                displayMyJobs();
+                loadStats();
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+            }
+        }
+
+        async function loadEmployees() {
+            try {
+                currentEmployees = [
+                    {
+                        _id: '1',
+                        name: 'John Kamau',
+                        location: 'Nakuru',
+                        specialization: 'Farming, Animal Care',
+                        phone: '254712345678'
+                    },
+                    {
+                        _id: '2',
+                        name: 'Mary Wanjiku',
+                        location: 'Kiambu',
+                        specialization: 'Domestic Work, Childcare',
+                        phone: '254723456789'
+                    }
+                ];
+                displayEmployees();
+            } catch (error) {
+                console.error('Error loading employees:', error);
+            }
+        }
+
+        function displayMyJobs() {
+            const container = document.getElementById('myJobListings');
+            
+            if (myJobs.length === 0) {
+                container.innerHTML = `
+                    <div class="message">
+                        <i class="fas fa-info-circle"></i> 
+                        <span data-en="You haven't posted any jobs yet." data-sw="Hujatangaza kazi yoyote bado.">
+                            Hujatangaza kazi yoyote bado.
+                        </span>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = myJobs.map(job => `
+                <div class="job-card">
+                    <div class="job-actions">
+                        <button class="btn-action btn-edit" onclick="editJob('${job._id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-action btn-delete" onclick="deleteJob('${job._id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="job-header">
+                        <div class="job-title">${job.title}</div>
+                        <div class="job-category">${job.category}</div>
+                    </div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${job.location}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>${job.businessType || 'Individual'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>${job.applications || 0} applications</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${job.hired || 0} hired</span>
+                        </div>
+                    </div>
+                    <div class="communication">
+                        <button class="btn btn-primary" onclick="viewApplications('${job._id}')">
+                            <i class="fas fa-eye"></i> <span data-en="View Applications" data-sw="Angalia Maombi">Angalia Maombi</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayEmployees() {
+            const container = document.getElementById('employeeListings');
+            
+            if (currentEmployees.length === 0) {
+                container.innerHTML = `
+                    <div class="message">
+                        <i class="fas fa-info-circle"></i> 
+                        <span data-en="No workers available at the moment." data-sw="Hakuna wafanyikazi walioopo kwa sasa.">
+                            Hakuna wafanyikazi walioopo kwa sasa.
+                        </span>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = currentEmployees.map(employee => `
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-title">${employee.name}</div>
+                        <div class="job-category">Available Worker</div>
+                    </div>
+                    <div class="job-description">
+                        <strong data-en="Specialization:" data-sw="Utaalamu:">Utaalamu:</strong> ${employee.specialization}
+                    </div>
+                    <div class="job-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${employee.location}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-phone"></i>
+                            <span>${employee.phone}</span>
+                        </div>
+                    </div>
+                    <div class="communication">
+                        <a href="tel:${employee.phone}" class="btn btn-call">
+                            <i class="fas fa-phone"></i> <span data-en="Call" data-sw="Piga Simu">Piga Simu</span>
+                        </a>
+                        <a href="https://wa.me/${employee.phone}?text=Hi, I saw your profile on Kazi Mashinani and would like to discuss job opportunities" 
+                           class="btn btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> <span data-en="WhatsApp" data-sw="WhatsApp">WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Post job function
+        async function handlePostJob(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('jobTitle').value.trim();
+            const description = document.getElementById('jobDescription').value.trim();
+            const location = document.getElementById('jobLocation').value.trim();
+            const category = document.getElementById('jobCategory').value;
+            const phone = document.getElementById('jobPhone').value.trim();
+            const businessType = document.getElementById('businessType').value.trim();
+            
+            if (!title || !description || !location || !phone) {
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Please fill in all required fields' 
+                        : 'Tafadhali jaza sehemu zote zinazohitajika',
+                    'error'
+                );
+                return;
+            }
+            
+            try {
+                // Simulate API call
+                setTimeout(() => {
+                    const newJob = {
+                        _id: 'job_' + Date.now(),
+                        title: title,
+                        description: description,
+                        location: location,
+                        category: category,
+                        phone: phone,
+                        businessType: businessType,
+                        createdAt: new Date(),
+                        applications: 0,
+                        hired: 0
+                    };
+                    
+                    myJobs.push(newJob);
+                    
+                    showMessage(
+                        currentLanguage === 'en' 
+                            ? 'Job posted successfully!' 
+                            : 'Kazi imetangazwa kikamilifu!',
+                        'success'
+                    );
+                    
+                    // Reset form
+                    document.getElementById('jobForm').reset();
+                    
+                    // Update display and stats
+                    displayMyJobs();
+                    loadStats();
+                    
+                    // Switch to my jobs section
+                    showSection('myJobs');
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error posting job:', error);
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Failed to post job. Please try again.' 
+                        : 'Imeshindwa kutangaza kazi. Tafadhali jaribu tena.',
+                    'error'
+                );
+            }
+        }
+
+        function editJob(jobId) {
+            alert(currentLanguage === 'en' ? 'Job editing would open here' : 'Kuhariri kazi kungafungua hapa');
+        }
+
+        function deleteJob(jobId) {
+            if (confirm(currentLanguage === 'en' ? 'Are you sure you want to delete this job?' : 'Una uhakika ungependa kufuta kazi hii?')) {
+                myJobs = myJobs.filter(job => job._id !== jobId);
+                displayMyJobs();
+                loadStats();
+                showMessage(
+                    currentLanguage === 'en' 
+                        ? 'Job deleted successfully' 
+                        : 'Kazi imefutwa kikamilifu',
+                    'success'
+                );
+            }
+        }
+
+        function viewApplications(jobId) {
+            alert(currentLanguage === 'en' ? 'Applications view would open here' : 'Maonyesho ya maombi yangefungua hapa');
+        }
+
+        // Profile functions
         function loadProfile() {
             document.getElementById('profileName').value = currentUser.name;
             document.getElementById('profilePhone').value = currentUser.phone;
             document.getElementById('profileLocation').value = currentUser.location;
-            document.getElementById('profileSpecialization').value = currentUser.specialization || '';
+            
+            if (userRole === 'employee') {
+                document.getElementById('profileSpecialization').value = currentUser.specialization || '';
+            } else if (userRole === 'employer') {
+                document.getElementById('profileSpecialization').value = currentUser.jobType || '';
+            }
         }
 
         function editProfile() {
             alert(currentLanguage === 'en' ? 'Profile editing would open here' : 'Kuhariri wasifu kungafungua hapa');
         }
 
+        // Navigation functions
         function showSection(section) {
+            // Hide all sections
             document.getElementById('homeSection').style.display = 'none';
             document.getElementById('jobsSection').style.display = 'none';
             document.getElementById('applicationsSection').style.display = 'none';
+            document.getElementById('postJobSection').style.display = 'none';
+            document.getElementById('myJobsSection').style.display = 'none';
+            document.getElementById('employeesSection').style.display = 'none';
             document.getElementById('profileSection').style.display = 'none';
             
+            // Remove active class from all nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             
+            // Show selected section and set active nav
             if (section === 'home') {
                 document.getElementById('homeSection').style.display = 'block';
                 document.querySelectorAll('.nav-item')[0].classList.add('active');
@@ -1397,21 +1848,34 @@
             } else if (section === 'applications') {
                 document.getElementById('applicationsSection').style.display = 'block';
                 document.querySelectorAll('.nav-item')[2].classList.add('active');
+            } else if (section === 'post') {
+                document.getElementById('postJobSection').style.display = 'block';
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+            } else if (section === 'myJobs') {
+                document.getElementById('myJobsSection').style.display = 'block';
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+            } else if (section === 'employees') {
+                document.getElementById('employeesSection').style.display = 'block';
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
             } else if (section === 'profile') {
                 document.getElementById('profileSection').style.display = 'block';
-                document.querySelectorAll('.nav-item')[3].classList.add('active');
+                document.querySelectorAll('.nav-item')[userRole === 'employee' ? 3 : 4].classList.add('active');
                 loadProfile();
             }
         }
 
         function logout() {
+            // Clear all stored data
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('userRole');
+            
+            // Redirect to auth page
             window.location.href = 'auth.html';
         }
 
         function showMessage(message, type) {
+            // Create a temporary message display
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
             messageDiv.style.position = 'fixed';
@@ -1423,6 +1887,7 @@
             
             document.body.appendChild(messageDiv);
             
+            // Remove message after 3 seconds
             setTimeout(() => {
                 if (document.body.contains(messageDiv)) {
                     document.body.removeChild(messageDiv);
@@ -1438,11 +1903,15 @@
             window.open('mailto:support@kazimashinani.com');
         }
 
+        // Global functions
         window.showSection = showSection;
         window.toggleLanguage = toggleLanguage;
         window.openBlogModal = openBlogModal;
         window.applyForJob = applyForJob;
         window.filterJobs = filterJobs;
+        window.editJob = editJob;
+        window.deleteJob = deleteJob;
+        window.viewApplications = viewApplications;
         window.editProfile = editProfile;
         window.logout = logout;
     </script>
