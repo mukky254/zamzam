@@ -278,6 +278,38 @@
         .hidden {
             display: none;
         }
+        
+        .login-role-selection {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .login-role-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .login-role-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .login-role-btn.active {
+            border-color: #1e3a8a;
+            background: #dbeafe;
+            color: #1e3a8a;
+        }
+        
+        .login-role-btn i {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -310,6 +342,20 @@
         <!-- Login Form -->
         <form id="loginForm" class="auth-form">
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
+            
+            <!-- Role Selection for Login -->
+            <div class="login-role-selection">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937;" data-en="I am a:" data-sw="Mimi ni:">Mimi ni:</label>
+                <div class="login-role-buttons">
+                    <button type="button" class="login-role-btn active" onclick="selectLoginRole('employee')">
+                        <i class="fas fa-user-tie"></i> <span data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</span>
+                    </button>
+                    <button type="button" class="login-role-btn" onclick="selectLoginRole('employer')">
+                        <i class="fas fa-briefcase"></i> <span data-en="Employer" data-sw="Mwajiri">Mwajiri</span>
+                    </button>
+                </div>
+            </div>
+            
             <div class="auth-form-group">
                 <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
                 <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
@@ -399,29 +445,28 @@
     </div>
 
     <script>
-        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
+        let selectedLoginRole = 'employee';
         let currentLanguage = 'sw';
         let phoneExists = false;
 
-        // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const roleSelection = document.getElementById('roleSelection');
         const signupForm = document.getElementById('signupForm');
         const messageContainer = document.getElementById('messageContainer');
         const phoneError = document.getElementById('phoneError');
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in
             const token = localStorage.getItem('token');
-            if (token) {
-                window.location.href = 'index.html';
+            const user = localStorage.getItem('user');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (token && user && userRole) {
+                redirectToDashboard();
                 return;
             }
 
-            // Set initial language
             const savedLanguage = localStorage.getItem('preferredLanguage');
             if (savedLanguage) {
                 currentLanguage = savedLanguage;
@@ -438,7 +483,6 @@
         }
 
         function showAuthTab(tab) {
-            // Update tabs
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if (tab === 'login') {
                 document.querySelectorAll('.auth-tab')[0].classList.add('active');
@@ -446,7 +490,6 @@
                 document.querySelectorAll('.auth-tab')[1].classList.add('active');
             }
 
-            // Show appropriate forms
             if (tab === 'login') {
                 loginForm.classList.remove('hidden');
                 roleSelection.classList.add('hidden');
@@ -460,6 +503,14 @@
             clearMessages();
         }
 
+        function selectLoginRole(role) {
+            selectedLoginRole = role;
+            document.querySelectorAll('.login-role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
         function selectRole(role) {
             selectedRole = role;
             document.querySelectorAll('.role-option').forEach(option => {
@@ -467,7 +518,6 @@
             });
             event.currentTarget.classList.add('active');
             
-            // Update form based on role
             const nameLabel = document.getElementById('nameLabel');
             const specializationGroup = document.getElementById('specializationGroup');
             const jobTypeGroup = document.getElementById('jobTypeGroup');
@@ -490,12 +540,10 @@
                 jobTypeGroup.style.display = 'block';
             }
             
-            // Show signup form
             roleSelection.classList.add('hidden');
             signupForm.classList.remove('hidden');
         }
 
-        // Phone number validation
         async function checkPhoneExists(phone) {
             if (!phone || phone.length < 10) return;
 
@@ -530,7 +578,6 @@
             }
         }
 
-        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
@@ -552,7 +599,6 @@
         }
 
         function translatePage() {
-            // Translate text content
             const elements = document.querySelectorAll('[data-en][data-sw]');
             elements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -562,7 +608,6 @@
                 }
             });
 
-            // Translate placeholders
             const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
             placeholderElements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -591,7 +636,6 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
-            // Show loading state
             const loginBtn = document.getElementById('loginBtn');
             const loginText = document.getElementById('loginText');
             loginBtn.disabled = true;
@@ -609,23 +653,17 @@
                     },
                     body: JSON.stringify({
                         phone: cleanPhone,
-                        password: password
+                        password: password,
+                        role: selectedLoginRole
                     })
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
-                
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
-                }
+                const data = await response.json();
                 
                 if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -635,7 +673,7 @@
                     );
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        redirectToDashboard();
                     }, 1500);
                     
                 } else {
@@ -644,6 +682,10 @@
                         errorMessage = currentLanguage === 'en' 
                             ? 'Invalid phone number or password' 
                             : 'Nambari ya simu au nenosiri si sahihi';
+                    } else if (data.error && data.error.includes('role')) {
+                        errorMessage = currentLanguage === 'en'
+                            ? 'This account is not registered as ' + (selectedLoginRole === 'employee' ? 'a job seeker' : 'an employer')
+                            : 'Akaunti hii haijaandikishwa kama ' + (selectedLoginRole === 'employee' ? 'mtafuta kazi' : 'mwajiri');
                     } else {
                         errorMessage = data.error || 'Sign in failed';
                     }
@@ -685,7 +727,6 @@
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             
-            // Validation
             if (!name || !phone || !location || !password) {
                 showMessage(
                     currentLanguage === 'en' 
@@ -728,7 +769,6 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
-            // Prepare user data
             const userData = {
                 name: name,
                 phone: cleanPhone,
@@ -737,14 +777,12 @@
                 role: selectedRole
             };
             
-            // Add optional fields based on role
             if (selectedRole === 'employee') {
                 userData.specialization = document.getElementById('signupSpecialization').value.trim();
             } else {
                 userData.jobType = document.getElementById('signupJobType').value.trim();
             }
             
-            // Show loading state
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
             signupBtn.disabled = true;
@@ -763,19 +801,12 @@
                     body: JSON.stringify(userData)
                 });
                 
-                const contentType = response.headers.get('content-type');
-                let data;
-                
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const text = await response.text();
-                    throw new Error('Server error');
-                }
+                const data = await response.json();
                 
                 if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -785,7 +816,7 @@
                     );
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        redirectToDashboard();
                     }, 2000);
                     
                 } else {
@@ -812,6 +843,18 @@
                 } else {
                     signupText.textContent = 'Fungua Akaunti';
                 }
+            }
+        }
+
+        function redirectToDashboard() {
+            const userRole = localStorage.getItem('userRole');
+            
+            if (userRole === 'employer') {
+                window.location.href = 'employer-dashboard.html';
+            } else if (userRole === 'employee') {
+                window.location.href = 'employee-dashboard.html';
+            } else {
+                window.location.href = 'auth.html';
             }
         }
 
@@ -853,9 +896,9 @@
             messageContainer.innerHTML = '';
         }
 
-        // Global functions
         window.showAuthTab = showAuthTab;
         window.selectRole = selectRole;
+        window.selectLoginRole = selectLoginRole;
         window.toggleLanguage = toggleLanguage;
         window.checkPhoneExists = checkPhoneExists;
     </script>
