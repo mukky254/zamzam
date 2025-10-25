@@ -278,38 +278,6 @@
         .hidden {
             display: none;
         }
-        
-        .login-role-selection {
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .login-role-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .login-role-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-        
-        .login-role-btn.active {
-            border-color: #1e3a8a;
-            background: #dbeafe;
-            color: #1e3a8a;
-        }
-        
-        .login-role-btn i {
-            margin-right: 8px;
-        }
     </style>
 </head>
 <body>
@@ -342,20 +310,6 @@
         <!-- Login Form -->
         <form id="loginForm" class="auth-form">
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1f2937;" data-en="Welcome Back" data-sw="Karibu Tena">Karibu Tena</h2>
-            
-            <!-- Role Selection for Login -->
-            <div class="login-role-selection">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937;" data-en="I am a:" data-sw="Mimi ni:">Mimi ni:</label>
-                <div class="login-role-buttons">
-                    <button type="button" class="login-role-btn active" onclick="selectLoginRole('employee')">
-                        <i class="fas fa-user-tie"></i> <span data-en="Job Seeker" data-sw="Mtafuta Kazi">Mtafuta Kazi</span>
-                    </button>
-                    <button type="button" class="login-role-btn" onclick="selectLoginRole('employer')">
-                        <i class="fas fa-briefcase"></i> <span data-en="Employer" data-sw="Mwajiri">Mwajiri</span>
-                    </button>
-                </div>
-            </div>
-            
             <div class="auth-form-group">
                 <label data-en="Mobile Number *" data-sw="Nambari ya Simu *">Nambari ya Simu *</label>
                 <input type="tel" id="loginPhone" required oninput="formatPhoneNumber(this)">
@@ -448,7 +402,6 @@
         // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
-        let selectedLoginRole = 'employee'; // Default login role
         let currentLanguage = 'sw';
         let phoneExists = false;
 
@@ -463,12 +416,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is already logged in
             const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            const userRole = localStorage.getItem('userRole');
-            
-            if (token && user && userRole) {
-                // User is already logged in, redirect to appropriate dashboard
-                redirectToDashboard();
+            if (token) {
+                window.location.href = 'index.html';
                 return;
             }
 
@@ -509,16 +458,6 @@
             }
             
             clearMessages();
-        }
-
-        function selectLoginRole(role) {
-            selectedLoginRole = role;
-            
-            // Update UI
-            document.querySelectorAll('.login-role-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
         }
 
         function selectRole(role) {
@@ -663,25 +602,30 @@
             }
             
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         phone: cleanPhone,
-                        password: password,
-                        role: selectedLoginRole
+                        password: password
                     })
                 });
                 
-                const data = await response.json();
+                const contentType = response.headers.get('content-type');
+                let data;
                 
-                if (response.ok) {
-                    // Store user data and token
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    throw new Error('Server error');
+                }
+                
+                if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -691,20 +635,23 @@
                     );
                     
                     setTimeout(() => {
-                        redirectToDashboard();
+                        window.location.href = 'index.html';
                     }, 1500);
+                    
                 } else {
-                    throw new Error(data.message || 'Login failed');
+                    let errorMessage;
+                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
+                        errorMessage = currentLanguage === 'en' 
+                            ? 'Invalid phone number or password' 
+                            : 'Nambari ya simu au nenosiri si sahihi';
+                    } else {
+                        errorMessage = data.error || 'Sign in failed';
+                    }
+                    throw new Error(errorMessage);
                 }
                 
             } catch (error) {
-                showMessage(
-                    error.message || 
-                    (currentLanguage === 'en' 
-                        ? 'Login failed. Please try again.' 
-                        : 'Imeshindwa kuingia. Tafadhali jaribu tena.'),
-                    'error'
-                );
+                showMessage(error.message, 'error');
             } finally {
                 loginBtn.disabled = false;
                 if (currentLanguage === 'en') {
@@ -781,6 +728,22 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
+            // Prepare user data
+            const userData = {
+                name: name,
+                phone: cleanPhone,
+                location: location,
+                password: password,
+                role: selectedRole
+            };
+            
+            // Add optional fields based on role
+            if (selectedRole === 'employee') {
+                userData.specialization = document.getElementById('signupSpecialization').value.trim();
+            } else {
+                userData.jobType = document.getElementById('signupJobType').value.trim();
+            }
+            
             // Show loading state
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
@@ -792,22 +755,7 @@
             }
             
             try {
-                const userData = {
-                    name: name,
-                    phone: cleanPhone,
-                    location: location,
-                    password: password,
-                    role: selectedRole
-                };
-                
-                // Add role-specific fields
-                if (selectedRole === 'employee') {
-                    userData.specialization = document.getElementById('signupSpecialization').value.trim();
-                } else {
-                    userData.jobType = document.getElementById('signupJobType').value.trim();
-                }
-                
-                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -815,13 +763,19 @@
                     body: JSON.stringify(userData)
                 });
                 
-                const data = await response.json();
+                const contentType = response.headers.get('content-type');
+                let data;
                 
-                if (response.ok) {
-                    // Store user data and token
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    throw new Error('Server error');
+                }
+                
+                if (response.ok && data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    localStorage.setItem('userRole', data.user.role);
                     
                     showMessage(
                         currentLanguage === 'en'
@@ -831,20 +785,26 @@
                     );
                     
                     setTimeout(() => {
-                        redirectToDashboard();
+                        window.location.href = 'index.html';
                     }, 2000);
+                    
                 } else {
-                    throw new Error(data.message || 'Registration failed');
+                    if (data.error && data.error.includes('already exists')) {
+                        phoneExists = true;
+                        phoneError.style.display = 'block';
+                        document.getElementById('signupBtn').disabled = true;
+                        throw new Error(
+                            currentLanguage === 'en'
+                                ? 'This phone number is already registered'
+                                : 'Nambari hii ya simu tayari imesajiliwa'
+                        );
+                    } else {
+                        throw new Error(data.error || 'Sign up failed');
+                    }
                 }
                 
             } catch (error) {
-                showMessage(
-                    error.message || 
-                    (currentLanguage === 'en' 
-                        ? 'Registration failed. Please try again.' 
-                        : 'Imeshindwa kusajili. Tafadhali jaribu tena.'),
-                    'error'
-                );
+                showMessage(error.message, 'error');
             } finally {
                 signupBtn.disabled = false;
                 if (currentLanguage === 'en') {
@@ -853,10 +813,6 @@
                     signupText.textContent = 'Fungua Akaunti';
                 }
             }
-        }
-
-        function redirectToDashboard() {
-            window.location.href = 'index.html';
         }
 
         function formatPhoneNumber(input) {
@@ -900,7 +856,6 @@
         // Global functions
         window.showAuthTab = showAuthTab;
         window.selectRole = selectRole;
-        window.selectLoginRole = selectLoginRole;
         window.toggleLanguage = toggleLanguage;
         window.checkPhoneExists = checkPhoneExists;
     </script>
