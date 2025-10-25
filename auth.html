@@ -445,28 +445,34 @@
     </div>
 
     <script>
+        // Configuration
         const API_BASE_URL = 'https://backita.onrender.com';
         let selectedRole = null;
-        let selectedLoginRole = 'employee';
+        let selectedLoginRole = 'employee'; // Default login role
         let currentLanguage = 'sw';
         let phoneExists = false;
 
+        // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const roleSelection = document.getElementById('roleSelection');
         const signupForm = document.getElementById('signupForm');
         const messageContainer = document.getElementById('messageContainer');
         const phoneError = document.getElementById('phoneError');
 
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
             const userRole = localStorage.getItem('userRole');
             
             if (token && user && userRole) {
+                // User is already logged in, redirect to appropriate dashboard
                 redirectToDashboard();
                 return;
             }
 
+            // Set initial language
             const savedLanguage = localStorage.getItem('preferredLanguage');
             if (savedLanguage) {
                 currentLanguage = savedLanguage;
@@ -483,6 +489,7 @@
         }
 
         function showAuthTab(tab) {
+            // Update tabs
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if (tab === 'login') {
                 document.querySelectorAll('.auth-tab')[0].classList.add('active');
@@ -490,6 +497,7 @@
                 document.querySelectorAll('.auth-tab')[1].classList.add('active');
             }
 
+            // Show appropriate forms
             if (tab === 'login') {
                 loginForm.classList.remove('hidden');
                 roleSelection.classList.add('hidden');
@@ -505,6 +513,8 @@
 
         function selectLoginRole(role) {
             selectedLoginRole = role;
+            
+            // Update UI
             document.querySelectorAll('.login-role-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -518,6 +528,7 @@
             });
             event.currentTarget.classList.add('active');
             
+            // Update form based on role
             const nameLabel = document.getElementById('nameLabel');
             const specializationGroup = document.getElementById('specializationGroup');
             const jobTypeGroup = document.getElementById('jobTypeGroup');
@@ -540,10 +551,12 @@
                 jobTypeGroup.style.display = 'block';
             }
             
+            // Show signup form
             roleSelection.classList.add('hidden');
             signupForm.classList.remove('hidden');
         }
 
+        // Phone number validation
         async function checkPhoneExists(phone) {
             if (!phone || phone.length < 10) return;
 
@@ -578,6 +591,7 @@
             }
         }
 
+        // Language functions
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'sw' : 'en';
             localStorage.setItem('preferredLanguage', currentLanguage);
@@ -599,6 +613,7 @@
         }
 
         function translatePage() {
+            // Translate text content
             const elements = document.querySelectorAll('[data-en][data-sw]');
             elements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -608,6 +623,7 @@
                 }
             });
 
+            // Translate placeholders
             const placeholderElements = document.querySelectorAll('[data-en-placeholder][data-sw-placeholder]');
             placeholderElements.forEach(element => {
                 if (currentLanguage === 'en') {
@@ -636,6 +652,7 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
+            // Show loading state
             const loginBtn = document.getElementById('loginBtn');
             const loginText = document.getElementById('loginText');
             loginBtn.disabled = true;
@@ -646,7 +663,7 @@
             }
             
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -660,7 +677,8 @@
                 
                 const data = await response.json();
                 
-                if (response.ok && data.success) {
+                if (response.ok) {
+                    // Store user data and token
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('userRole', data.user.role);
@@ -675,25 +693,18 @@
                     setTimeout(() => {
                         redirectToDashboard();
                     }, 1500);
-                    
                 } else {
-                    let errorMessage;
-                    if (data.error && data.error.includes('not found') || data.error.includes('invalid')) {
-                        errorMessage = currentLanguage === 'en' 
-                            ? 'Invalid phone number or password' 
-                            : 'Nambari ya simu au nenosiri si sahihi';
-                    } else if (data.error && data.error.includes('role')) {
-                        errorMessage = currentLanguage === 'en'
-                            ? 'This account is not registered as ' + (selectedLoginRole === 'employee' ? 'a job seeker' : 'an employer')
-                            : 'Akaunti hii haijaandikishwa kama ' + (selectedLoginRole === 'employee' ? 'mtafuta kazi' : 'mwajiri');
-                    } else {
-                        errorMessage = data.error || 'Sign in failed';
-                    }
-                    throw new Error(errorMessage);
+                    throw new Error(data.message || 'Login failed');
                 }
                 
             } catch (error) {
-                showMessage(error.message, 'error');
+                showMessage(
+                    error.message || 
+                    (currentLanguage === 'en' 
+                        ? 'Login failed. Please try again.' 
+                        : 'Imeshindwa kuingia. Tafadhali jaribu tena.'),
+                    'error'
+                );
             } finally {
                 loginBtn.disabled = false;
                 if (currentLanguage === 'en') {
@@ -727,6 +738,7 @@
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             
+            // Validation
             if (!name || !phone || !location || !password) {
                 showMessage(
                     currentLanguage === 'en' 
@@ -769,20 +781,7 @@
             
             const cleanPhone = formatPhoneToStandard(phone);
             
-            const userData = {
-                name: name,
-                phone: cleanPhone,
-                location: location,
-                password: password,
-                role: selectedRole
-            };
-            
-            if (selectedRole === 'employee') {
-                userData.specialization = document.getElementById('signupSpecialization').value.trim();
-            } else {
-                userData.jobType = document.getElementById('signupJobType').value.trim();
-            }
-            
+            // Show loading state
             const signupBtn = document.getElementById('signupBtn');
             const signupText = document.getElementById('signupText');
             signupBtn.disabled = true;
@@ -793,7 +792,22 @@
             }
             
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                const userData = {
+                    name: name,
+                    phone: cleanPhone,
+                    location: location,
+                    password: password,
+                    role: selectedRole
+                };
+                
+                // Add role-specific fields
+                if (selectedRole === 'employee') {
+                    userData.specialization = document.getElementById('signupSpecialization').value.trim();
+                } else {
+                    userData.jobType = document.getElementById('signupJobType').value.trim();
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -803,7 +817,8 @@
                 
                 const data = await response.json();
                 
-                if (response.ok && data.success) {
+                if (response.ok) {
+                    // Store user data and token
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('userRole', data.user.role);
@@ -818,24 +833,18 @@
                     setTimeout(() => {
                         redirectToDashboard();
                     }, 2000);
-                    
                 } else {
-                    if (data.error && data.error.includes('already exists')) {
-                        phoneExists = true;
-                        phoneError.style.display = 'block';
-                        document.getElementById('signupBtn').disabled = true;
-                        throw new Error(
-                            currentLanguage === 'en'
-                                ? 'This phone number is already registered'
-                                : 'Nambari hii ya simu tayari imesajiliwa'
-                        );
-                    } else {
-                        throw new Error(data.error || 'Sign up failed');
-                    }
+                    throw new Error(data.message || 'Registration failed');
                 }
                 
             } catch (error) {
-                showMessage(error.message, 'error');
+                showMessage(
+                    error.message || 
+                    (currentLanguage === 'en' 
+                        ? 'Registration failed. Please try again.' 
+                        : 'Imeshindwa kusajili. Tafadhali jaribu tena.'),
+                    'error'
+                );
             } finally {
                 signupBtn.disabled = false;
                 if (currentLanguage === 'en') {
@@ -847,15 +856,7 @@
         }
 
         function redirectToDashboard() {
-            const userRole = localStorage.getItem('userRole');
-            
-            if (userRole === 'employer') {
-                window.location.href = 'employer-dashboard.html';
-            } else if (userRole === 'employee') {
-                window.location.href = 'employee-dashboard.html';
-            } else {
-                window.location.href = 'auth.html';
-            }
+            window.location.href = 'index.html';
         }
 
         function formatPhoneNumber(input) {
@@ -896,6 +897,7 @@
             messageContainer.innerHTML = '';
         }
 
+        // Global functions
         window.showAuthTab = showAuthTab;
         window.selectRole = selectRole;
         window.selectLoginRole = selectLoginRole;
